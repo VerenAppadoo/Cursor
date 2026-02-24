@@ -1,0 +1,78 @@
+.purchase-order-modal {
+  padding: 20px;
+  min-width: 500px;
+
+  .busy-indicator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+  }
+
+  .purchase-order-form {
+    .field {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+
+        &.required::after {
+          content: " *";
+          color: var(--ids-color-palette-red-60);
+        }
+      }
+
+      select[soho-dropdown],
+      input[soho-datepicker],
+      textarea[soho-textarea] {
+        width: 100%;
+        min-width: 350px;
+      }
+
+      textarea[soho-textarea] {
+        resize: vertical;
+        min-height: 80px;
+      }
+    }
+
+    .saving-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 10px;
+      background-color: var(--ids-color-palette-azure-10);
+      border: 1px solid var(--ids-color-palette-azure-30);
+      border-radius: 4px;
+      margin-top: 20px;
+
+      span {
+        color: var(--ids-color-palette-azure-70);
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Styles pour améliorer l'apparence des contrôles IDS
+select[soho-dropdown] {
+  option {
+    padding: 8px 12px;
+  }
+}
+
+input[soho-datepicker] {
+  &:focus {
+    border-color: var(--ids-color-palette-azure-60);
+    box-shadow: 0 0 0 2px rgba(56, 126, 166, 0.25);
+  }
+}
+
+textarea[soho-textarea] {
+  &:focus {
+    border-color: var(--ids-color-palette-azure-60);
+    box-shadow: 0 0 0 2px rgba(56, 126, 166, 0.25);
+  }
+}

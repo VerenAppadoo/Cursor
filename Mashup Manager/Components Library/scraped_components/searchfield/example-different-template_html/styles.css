@@ -1,0 +1,7 @@
+
+        .popupmenu.has-icons .icon.for-template:not(.arrow) {
+          margin-left: auto;
+          margin-top: auto;
+          position: static;
+        }
+      

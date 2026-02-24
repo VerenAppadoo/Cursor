@@ -1,0 +1,13 @@
+
+      .modal-body {
+        overflow: hidden;
+      }
+
+      @media (max-width: 767px) {
+        .modal-header .btn-close {
+          position: absolute;
+          right: 15px;
+          top: 15px;
+        }
+      }
+      

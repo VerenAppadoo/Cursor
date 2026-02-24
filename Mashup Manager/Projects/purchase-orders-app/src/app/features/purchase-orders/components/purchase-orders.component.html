@@ -1,0 +1,50 @@
+<div class="purchase-orders-page">
+  <!-- Toolbar -->
+  <div soho-toolbar-flex>
+    <soho-toolbar-flex-section [isTitle]="true">
+      <h1 soho-toolbar-flex-page-title>Commandes d'Achat</h1>
+    </soho-toolbar-flex-section>
+
+    <soho-toolbar-flex-section [isButtonSet]="true">
+      <button soho-button="primary" 
+              type="button" 
+              (click)="onNewOrder()"
+              [disabled]="isLoading">
+        <soho-icon icon="add"></soho-icon>
+        <span>Nouvelle Commande</span>
+      </button>
+    </soho-toolbar-flex-section>
+
+    <soho-toolbar-flex-section [isSearch]="true">
+      <label soho-label for="search-orders" class="audible">Rechercher des commandes</label>
+      <input soho-searchfield
+             id="search-orders"
+             [(ngModel)]="searchTerm"
+             (keyup.enter)="onSearch()"
+             (cleared)="onSearchClear()"
+             [clearable]="true"
+             placeholder="Rechercher par N° commande, fournisseur...">
+    </soho-toolbar-flex-section>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isLoading" class="busy-indicator-container">
+    <div soho-busy-indicator [activated]="isLoading"></div>
+  </div>
+
+  <!-- DataGrid -->
+  <div *ngIf="!isLoading" class="datagrid-container">
+    <soho-datagrid
+      [columns]="columns"
+      [dataset]="filteredOrders"
+      [selectable]="'single'"
+      [alternateRowShading]="true"
+      [stretchColumn]="'last'"
+      [rowHeight]="'medium'"
+      (rowActivated)="onRowActivated($event)">
+    </soho-datagrid>
+  </div>
+
+  <!-- Container pour les modals -->
+  <div #modalContainer></div>
+</div>

@@ -1,0 +1,12 @@
+
+        .example1 .slide {
+          height: 300px;
+        }
+        .example1 .slide .card {
+          height: 250px;
+          width: 185px;
+        }
+        .example1 .slide .card .card-content {
+          padding: 25px 15px;
+        }
+      

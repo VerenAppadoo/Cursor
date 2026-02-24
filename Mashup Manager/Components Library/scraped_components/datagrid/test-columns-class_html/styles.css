@@ -1,0 +1,18 @@
+
+        .azure01 {
+          background-color: #CBEBF4 !important;
+        }
+        .emerald01 {
+          background-color: #D5F6C0 !important;
+        }
+        .amthyst01 {
+          background-color: #EDE3FC !important;
+        }
+        .is-bold {
+          background-color: #EDE3FC !important;
+          font-weight: bold;
+        }
+        .pre-white-space .datagrid-text-content {
+          white-space: pre;
+        }
+      

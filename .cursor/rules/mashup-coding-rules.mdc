@@ -1,0 +1,206 @@
+---
+description: General coding rules, conventions, and best practices for all Mashup development. Always apply.
+globs: ["**/*.ts", "**/*.html", "**/*.scss", "**/*.json"]
+alwaysApply: true
+author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+---
+
+# General Mashup Coding Rules & Best Practices
+
+## 1. Project Environment Constraints
+- Framework: **Odin** (custom Angular 18)
+- UI Library: **IDS Enterprise NG** (`ids-enterprise-ng@18.2.4`)
+- Underlying jQuery controls: **IDS Enterprise 4.98.3**
+- Node: 18+ required
+- Package manager: **npm** (never yarn or pnpm unless explicitly asked)
+
+---
+
+## 2. File & Folder Conventions
+
+### Naming
+| Type               | Convention            | Example                          |
+|--------------------|-----------------------|----------------------------------|
+| Component folder   | kebab-case            | `customer-list/`                 |
+| Component files    | `<name>.component.ts` | `customer-list.component.ts`     |
+| Module files       | `<name>.module.ts`    | `customer-list.module.ts`        |
+| Service files      | `<name>.service.ts`   | `customer-list.service.ts`       |
+| Model/Interface    | `<name>.model.ts`     | `customer.model.ts`              |
+| Template           | `<name>.component.html`| `customer-list.component.html`  |
+| Styles             | `<name>.component.scss`| `customer-list.component.scss`  |
+
+### One-responsibility rule
+- Each component does ONE thing.
+- Extract data-fetching logic into Services — never put HTTP calls in components.
+- Extract reusable logic into utility functions in `src/app/utils/`.
+
+---
+
+## 3. TypeScript Rules
+
+### General
+- **Always** use TypeScript strict mode (`"strict": true` in tsconfig).
+- **Never** use `any` — define proper interfaces or types.
+- **Always** type function return values explicitly.
+- Use `readonly` on properties that should not be mutated after initialization.
+- Use `const` over `let`; avoid `var`.
+
+### Interfaces & Models
+```typescript
+// ✅ Correct — strongly typed model
+export interface Customer {
+  readonly id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+// ❌ Wrong — using any
+const customer: any = { id: 1 };
+```
+
+### Angular Component Skeleton
+```typescript
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-my-component',
+  templateUrl: './my-component.component.html',
+  styleUrls: ['./my-component.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class MyComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private readonly cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    // subscribe to observables with takeUntil(this.destroy$)
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}
+```
+
+---
+
+## 4. Angular Rules
+
+### Modules
+- Every feature area has its own `NgModule`.
+- Lazy-load feature modules where possible.
+- Shared components go in a `SharedModule` — import it where needed.
+
+### Services
+- Mark services as `@Injectable({ providedIn: 'root' })` unless they need component-scoped instances.
+- HTTP services use `HttpClient` — always return `Observable`, never `Promise` (unless bridging with `lastValueFrom`).
+- Handle errors with `catchError` operator; never swallow errors silently.
+
+### Observables & Subscriptions
+- Always unsubscribe. Use the `takeUntil(this.destroy$)` pattern or `async` pipe.
+- Never subscribe inside subscribe (flatten with `switchMap`, `mergeMap`, etc.).
+- Use `async` pipe in templates whenever possible — it manages subscriptions automatically.
+
+### Template Best Practices
+- Use `trackBy` on all `*ngFor` directives.
+- Avoid complex expressions in templates — compute values in TypeScript.
+- Use `OnPush` change detection with `markForCheck()` for mutable data.
+
+---
+
+## 5. IDS Component Rules (Angular)
+
+### Initialization
+- IDS components **must not** be accessed before `ngAfterViewInit`.
+- Use `@ViewChild` with `{ static: false }` (the default) for IDS component refs.
+
+### Event handling
+- Always type the event parameter — check the `.d.ts` for the exact payload type.
+```typescript
+// ✅ Correct — typed event payload
+onRowActivated(event: SohoDataGridRowActivatedEvent): void {
+  console.log(event.row, event.item);
+}
+```
+
+### Columns setup for DataGrid
+```typescript
+// Always define columns as a class property
+columns: SohoDataGridColumn[] = [
+  { id: 'id',   name: 'ID',   field: 'id',    sortable: true },
+  { id: 'name', name: 'Name', field: 'name',  sortable: true },
+];
+```
+
+### BusyIndicator
+- Show busy indicator before async operations:
+```html
+<soho-busy-indicator [activated]="isBusy"></soho-busy-indicator>
+```
+
+---
+
+## 6. SCSS / Styling Rules
+
+- Import IDS theme at the root `styles.scss` level — never per-component.
+- Use IDS CSS custom properties for colors — never hardcode hex values.
+- Component-specific overrides only when absolutely necessary.
+- Follow BEM-lite naming for custom classes: `block__element--modifier`.
+- Use `px`/`rem` consistently — avoid `em` for layout.
+
+---
+
+## 7. Accessibility Rules
+
+- All interactive IDS components are accessible by default — do NOT disable their ARIA attributes.
+- Always provide `aria-label` or `aria-labelledby` for icon-only buttons.
+- Keyboard navigation must work for all interactive elements.
+- Do not use `tabindex > 0`.
+
+---
+
+## 8. Error Handling
+
+- Never let errors silently fail.
+- Display user-facing errors using the IDS `soho-message` or `soho-toast` components.
+- Log technical errors to the console in development (`isDevMode()`).
+
+```typescript
+import { isDevMode } from '@angular/core';
+
+catchError((error: HttpErrorResponse) => {
+  if (isDevMode()) {
+    console.error('[MyService] Error:', error);
+  }
+  this.toastService.show({ title: 'Error', message: error.message, type: 'error' });
+  return EMPTY;
+})
+```
+
+---
+
+## 9. Performance Rules
+
+- Avoid calling functions in templates (they run on every change detection cycle).
+- Memoize expensive computations with `getter` properties or pipes.
+- Use `soho-datagrid` virtual scrolling for large datasets (set `virtualScroll: true` in grid options).
+- Debounce search/filter inputs with `debounceTime(300)` before triggering API calls.
+
+---
+
+## 10. Code Quality & Review Checklist
+
+Before considering any component done, verify:
+- [ ] No `any` types
+- [ ] Subscriptions properly unsubscribed
+- [ ] IDS component API verified against `lib/<component>/*.d.ts`
+- [ ] At least one HTML example from `scraped_components/<slug>/` consulted
+- [ ] Accessibility attributes present on interactive elements
+- [ ] `OnPush` change detection applied
+- [ ] Loading/error states handled with IDS components
+- [ ] No magic strings — use constants or enums

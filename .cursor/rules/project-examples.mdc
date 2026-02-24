@@ -1,0 +1,395 @@
+---
+description: Reference guide for the existing real mashup projects in Projects Examples/. Cursor must consult these projects when generating services, components, M3 API calls, stores, routing, and any other code patterns. Always apply.
+globs: ["**/*.ts", "**/*.html", "**/*.scss", "**/*.css", "**/*.json"]
+alwaysApply: true
+author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+---
+
+# Projects Examples — Real Mashup Reference Code
+
+## What Is This Folder?
+
+`Mashup Manager/Projects Examples/` contains **real, production-used Odin mashup projects**.
+They are the authoritative reference for how code should be written in this workspace.
+
+**Before generating any service, component, store, utility function, or configuration:**
+→ Read the matching pattern from the appropriate project in `Projects Examples/`.
+→ Match the import style, class structure, naming, and patterns found there.
+
+---
+
+## Available Example Projects
+
+| Project Folder | Description |
+|---|---|
+| `Quick-Price-Quote/` | Standalone-component project; M3 API integration; order/item search UI |
+| `EXT_024_BuyersPortal/` | Module-based project; full feature routing; buyers portal |
+| `C04-ArbitragePomme/` | Production mashup – apple arbitrage workflow |
+| `C04-Formulation-BOM/` | Bill of materials formulation feature |
+| `C04-Formulation-OF/` | Manufacturing order formulation |
+| `C04-MAH10-Transfert-BDC/` | Purchase order transfer workflow |
+| `C04-MAH33-CuissonPommes/` | Apple cooking process management |
+| `C04-PiloteStock/` | Stock pilot management |
+| `C07_MAH08_GroupageDegroupage/` | Grouping/ungrouping operations |
+| `C07_MAH20_GestionExpedition/` | Expedition/shipping management |
+
+---
+
+## Key Patterns — Always Follow These
+
+### 1. Standalone Components (preferred, used in Quick-Price-Quote)
+
+Reference: `Quick-Price-Quote/src/app/features/home/components/search/search/search.component.ts`
+
+```typescript
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { MIService } from '@infor-up/m3-odin-angular';
+import { IMIRequest, MIRecord } from '@infor-up/m3-odin';
+import {
+  SohoButtonModule,
+  SohoDropDownModule,
+  SohoBusyIndicatorModule,
+  // ... import ONLY the individual Soho modules the component uses
+} from 'ids-enterprise-ng';
+
+@Component({
+  selector: 'app-my-component',
+  templateUrl: './my-component.component.html',
+  styleUrl: './my-component.component.css',
+  standalone: true,
+  imports: [
+    TranslocoDirective,
+    NgFor, NgIf,
+    FormsModule,
+    SohoButtonModule,
+    SohoDropDownModule,
+    SohoBusyIndicatorModule,
+    // other standalone child components
+  ],
+})
+export class MyComponent implements OnInit {
+  constructor(private readonly miService: MIService) {}
+  ngOnInit(): void {}
+}
+```
+
+**Rules for standalone components:**
+- Import IDS modules **individually** (e.g. `SohoButtonModule`, `SohoDropDownModule`) — NOT `SohoComponentsModule` as a whole.
+- Add `TranslocoDirective` to imports when using translations.
+- Keep `standalone: true` on all new components.
+
+---
+
+### 2. M3 MI API Calls (calling Infor M3 business logic)
+
+Reference: `EXT_024_BuyersPortal/src/app/features/home/services/data.service.ts`
+
+**CRITICAL RULES:**
+- **NEVER put M3 API calls directly in components** — always create a dedicated service.
+- **Services return Observables** — components subscribe to them using `.subscribe()`.
+- **Record objects must be plain objects** — do NOT type them as `MIRecord` (it's a class, not an interface).
+
+**Service pattern (ALWAYS use this):**
+```typescript
+import { Injectable } from '@angular/core';
+import { throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { IMIRequest, Log } from '@infor-up/m3-odin';
+import { MIService } from '@infor-up/m3-odin-angular';
+
+// Define an interface for the response data
+export interface IMyItem {
+  ITNO: string;
+  ITDS: string;
+  // ... other fields
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MyDataService {
+  constructor(private readonly miService: MIService) {}
+
+  listItems(param: string) {
+    // ✅ CORRECT: Use plain object, NOT typed as MIRecord
+    const record = {
+      FIELD1: param,
+    };
+
+    // ❌ WRONG: Do NOT do this - MIRecord is a class, not an interface
+    // const record: MIRecord = { FIELD1: param };
+
+    const request: IMIRequest = {
+      program: 'MMS100MI',
+      transaction: 'LstItmByItmGr',
+      record,
+      maxReturnedRecords: 100,
+      typedOutput: true,
+      includeMetadata: true,
+    };
+
+    return this.miService.execute(request).pipe(
+      map((response) => {
+        if (response.hasError()) {
+          throw new Error('Failed to list items');
+        }
+        if (response.items) {
+          return response.items as IMyItem[];
+        } else {
+          return [];
+        }
+      }),
+      catchError((error) => {
+        Log.error(`MyDataService.listItems: ${JSON.stringify(error)}`);
+        return throwError(() => error);
+      })
+    );
+  }
+}
+```
+
+**Component pattern (subscribing to service):**
+```typescript
+import { Component } from '@angular/core';
+import { MyDataService, IMyItem } from './services/my-data.service';
+
+@Component({ ... })
+export class MyComponent {
+  items: IMyItem[] = [];
+  isBusy = false;
+
+  constructor(private readonly dataService: MyDataService) {}
+
+  onSearch(): void {
+    this.isBusy = true;
+    this.dataService.listItems('PARAM').subscribe({
+      next: (items) => {
+        this.items = items;
+        this.isBusy = false;
+      },
+      error: (error) => {
+        console.error('Error:', error);
+        this.items = [];
+        this.isBusy = false;
+      }
+    });
+  }
+}
+```
+
+**When to use `firstValueFrom()` (async/await pattern):**
+Use this ONLY inside services when you need to chain multiple API calls or need async/await:
+```typescript
+async getDataSequentially(): Promise<void> {
+  const response = await firstValueFrom(this.miService.execute(request));
+  // ... process response
+}
+```
+
+**Rules summary:**
+- **Services** → return Observables using `.pipe(map(), catchError())`
+- **Components** → call service methods and use `.subscribe({ next, error })`
+- **Record objects** → always use plain objects `{ FIELD: value }`, never `const record: MIRecord = {...}`
+- Import `IMIRequest`, `Log` from `'@infor-up/m3-odin'` (NOT `MIRecord` for typing records)
+- Import `MIService` from `'@infor-up/m3-odin-angular'`
+- Inject `MIService` as `private readonly miService: MIService`
+- Always check `response.hasError()` before using `response.items`
+- Use `Log.error()` from `@infor-up/m3-odin` for error logging in services
+
+---
+
+### 3. CUSEXTMI / Custom Extension Table (storing mashup config)
+
+Reference: `Quick-Price-Quote/src/app/features/home/services/app-settings.service.ts`
+
+When reading mashup configuration from M3's custom extension table:
+```typescript
+const request: IMIRequest = {
+  program: 'CUSEXTMI',
+  transaction: 'LstFieldValue',
+  record: {
+    FILE: 'MASHUP-CFG',
+    PK01: 'GLOBAL',
+    PK02: 'FEATURE-KEY',
+    PK03: 'SETTING-NAME',
+  },
+  maxReturnedRecords: 100,
+  typedOutput: true,
+  includeMetadata: true,
+};
+```
+
+---
+
+### 4. Store Pattern (State Management)
+
+Reference: `Quick-Price-Quote/src/app/core/models/store.ts` and `global.store.ts`
+
+**Base store class** (already exists in projects — reference, do not re-create):
+```typescript
+import { Observable, BehaviorSubject } from 'rxjs';
+import { environment } from '@environments/environment';
+
+export class Store<T> {
+  state$: Observable<T>;
+  private _state$: BehaviorSubject<T>;
+
+  protected constructor(initialState: T, storeName: string) {
+    this._state$ = new BehaviorSubject(initialState);
+    this.state$ = this._state$.asObservable();
+  }
+
+  get state(): T { return this._state$.getValue(); }
+
+  setState(nextState: T): void {
+    this._state$.next(nextState);
+  }
+}
+```
+
+**Creating a feature store:**
+```typescript
+import { Injectable } from '@angular/core';
+import { Store } from '@core/models';
+
+interface IMyFeatureStore {
+  items: MyItem[];
+  selectedItem: MyItem | null;
+  isLoading: boolean;
+}
+
+@Injectable({ providedIn: 'root' })
+export class MyFeatureStore extends Store<IMyFeatureStore> {
+  constructor() {
+    super({ items: [], selectedItem: null, isLoading: false }, 'MyFeatureStore');
+  }
+
+  update(data: Partial<IMyFeatureStore>): void {
+    this.setState({ ...this.state, ...data });
+  }
+}
+```
+
+---
+
+### 5. GDIS Services (Framework-level services)
+
+Reference: `Quick-Price-Quote/src/app/app.component.ts`
+
+These services from `@gdis/api` are available in all projects — inject and use them as needed:
+
+| Service | Purpose |
+|---|---|
+| `MessageService` | Show toast/message notifications to users |
+| `TranslationService` | Translate keys using the Transloco integration |
+| `UserService` | Get current logged-in M3 user info |
+| `ThemeService` | Get/set the IDS theme |
+| `LocaleService` | Handle M3 locale/language settings |
+| `UrlService` | Build M3/API URLs |
+| `DebugService` | Debug logging |
+| `HeaderService` | Control the application header |
+| `GdisStore` | Global GDIS state |
+| `AnalyticService` | Analytics tracking |
+| `SettingsService` | App-level settings |
+
+Import from `'@gdis/api'`:
+```typescript
+import { MessageService, UserService, TranslationService, GdisStore } from '@gdis/api';
+```
+
+---
+
+### 6. Path Aliases (tsconfig paths)
+
+All projects use these path aliases — always use them instead of relative paths:
+
+| Alias | Resolves to |
+|---|---|
+| `@core/` | `src/app/core/` |
+| `@shared/` | `src/app/shared/` |
+| `@gdis/` | `src/app/gdis/` |
+| `@environments/` | `src/environments/` |
+| `@features/` | `src/app/features/` (if defined) |
+
+---
+
+### 7. File Structure (mirroring existing projects)
+
+```
+src/app/
+  core/
+    enums/          ← App-wide enums
+    models/         ← Store base class, shared models
+    providers/      ← Angular providers
+    services/       ← Global services (global.store.ts, system.service.ts, etc.)
+    tokens/         ← Angular injection tokens (WINDOW, etc.)
+    types/          ← Global TypeScript types/interfaces
+    utils/          ← Utility functions
+  features/
+    <feature-name>/
+      components/   ← Presentational components
+      pages/        ← Routed page components
+      services/     ← Feature-scoped services
+      enums/        ← Feature enums
+      i18n/         ← Transloco translation JSON files
+      utils/        ← Feature utility functions
+      <feature>.routes.ts
+  shared/
+    components/     ← Reusable components used across features
+    services/       ← Shared services
+    types/          ← Shared interfaces
+  gdis/             ← GDIS framework integration layer
+```
+
+---
+
+### 8. Translation (Transloco)
+
+- Add `TranslocoDirective` to standalone component imports.
+- Use `*transloco="let t"` in templates.
+- Translation JSON files go in `features/<feature>/i18n/<lang>.json`.
+- Use `TranslationService` from `@gdis/api` for programmatic access.
+
+---
+
+### 9. odin.json (Proxy Configuration)
+
+Reference: `Quick-Price-Quote/odin.json`
+
+Each project has an `odin.json` that configures the dev proxy to M3/Infor Cloud:
+```json
+{
+  "projectName": "your-project-name",
+  "proxy": {
+    "/m3api-rest": {
+      "target": "https://mingle-ionapi.<region>.inforcloudsuite.com/<TENANT>",
+      "secure": false,
+      "changeOrigin": true
+    }
+  }
+}
+```
+
+---
+
+## How Cursor Should Use These Examples
+
+1. **Generating an M3 API call** → **ALWAYS create a service first**, never put API calls in components. Reference `EXT_024_BuyersPortal/src/app/features/home/services/data.service.ts` for the Observable pattern.
+2. **Generating a service** → Read a real service from `EXT_024_BuyersPortal/src/app/features/home/services/` and match the pattern (Injectable, returns Observable, uses pipe/map/catchError).
+3. **Generating a component** → Read a real component from `features/home/components/` and match standalone imports, selector, template structure. Components should inject services and use `.subscribe()`.
+4. **Generating a store** → Follow the `Store<T>` pattern from `core/models/store.ts` and `global.store.ts`.
+5. **Generating a page/route** → Check `features/home/home.routes.ts` and the corresponding page component.
+6. **Any pattern doubt** → Search semantically in `Projects Examples/` before guessing.
+
+## Common Mistakes to Avoid
+
+| ❌ Wrong | ✅ Correct |
+|---|---|
+| Put M3 API call in component | Create a service, call it from component |
+| `const record: MIRecord = { ... }` | `const record = { ... }` (plain object) |
+| `import { MIRecord } from '@infor-up/m3-odin'` for typing | Only import `IMIRequest`, `Log` |
+| Return Promise from service | Return Observable, let component subscribe |
+| Use `console.error()` in service | Use `Log.error()` from `@infor-up/m3-odin` |

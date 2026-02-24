@@ -1,0 +1,79 @@
+# Mashup Manager — Cursor AI Rules
+# Author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+
+You are an expert Mashup developer working with the Odin framework (custom Angular 18)
+and the IDS Enterprise NG component library (ids-enterprise-ng@18.2.4).
+
+---
+
+## CRITICAL WORKFLOW — Always follow this order
+
+When asked to generate any mashup code:
+
+1. **Identify the IDS components needed** from the user's request.
+2. **Consult the Components Library** before writing any component code:
+   - Read `Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/soho-<component>.component.d.ts`
+     to find the exact @Input and @Output names and types.
+   - Read `Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html`
+     for the canonical HTML usage pattern.
+3. **Generate code that uses only documented API properties** — never guess or invent @Input names.
+
+---
+
+## Framework: Odin (NOT plain Angular)
+
+- `odin new` — create a new project (NOT `ng new`)
+- `odin serve` — dev server (NOT `ng serve`)
+- `odin build` — build (NOT `ng build`)
+- `odin generate` or `odin g` — scaffolding (NOT `ng generate`)
+- **All projects MUST be created inside `Mashup Manager/Projects/`.**
+  Always `cd "Mashup Manager/Projects"` before running `odin new`.
+- When creating a new project: run `odin new`, enter project name, select **soho** as the library.
+- In `AppModule`, import `SohoComponentsModule` from `'ids-enterprise-ng'`.
+
+---
+
+## IDS Enterprise NG
+
+- Package: `ids-enterprise-ng@18.2.4`
+- Angular version: 18
+- Underlying jQuery library: `ids-enterprise@4.98.3`
+- All IDS Angular component selectors start with `soho-` (e.g. `soho-datagrid`, `soho-dropdown`).
+- IDS components must not be accessed before `ngAfterViewInit`.
+- Use `@ViewChild(SohoXxxComponent) xxxRef!: SohoXxxComponent;` for programmatic access.
+
+---
+
+## TypeScript Rules
+
+- No `any` types — always use proper interfaces.
+- `ChangeDetectionStrategy.OnPush` on all components.
+- Unsubscribe all Observables with `takeUntil(this.destroy$)`.
+- Type all IDS event handler parameters from the component `.d.ts`.
+- Data fetching belongs in Services, not in components.
+
+---
+
+## Component Library Paths
+
+- TypeScript definitions: `Mashup Manager/Components Library/ids-enterprise-ng/lib/`
+- HTML examples: `Mashup Manager/Components Library/scraped_components/`
+- Master component index: `Mashup Manager/Components Library/scraped_components/_index.json`
+- Detailed rules: `.cursor/rules/component-library.mdc`
+- Full coding standards: `.cursor/rules/mashup-coding-rules.mdc`
+- Odin framework guide: `.cursor/rules/odin-framework.mdc`
+- Prompt templates: `.cursor/rules/mashup-prompt-templates.mdc`
+- **Project examples guide**: `.cursor/rules/project-examples.mdc`
+
+## Projects Examples — Real Code Reference
+
+`Mashup Manager/Projects Examples/` contains real production Odin mashup projects.
+Before generating ANY service, component, store, M3 API call, route, or utility:
+→ Read the matching pattern from the closest project in `Projects Examples/`.
+→ Key patterns to follow:
+  - **Standalone components** with individual Soho module imports (NOT `SohoComponentsModule`)
+  - **M3 API calls**: `firstValueFrom(this.miService.execute(request))` with `IMIRequest` from `@infor-up/m3-odin`
+  - **Store pattern**: `Store<T>` BehaviorSubject-based class in `core/models/store.ts`
+  - **GDIS services**: import from `@gdis/api` (MessageService, UserService, ThemeService, etc.)
+  - **Path aliases**: `@core/`, `@shared/`, `@gdis/`, `@environments/`
+  - **Translation**: `TranslocoDirective` + `@jsverse/transloco`

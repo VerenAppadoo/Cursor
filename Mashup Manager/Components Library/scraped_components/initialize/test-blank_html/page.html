@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en-US" data-sohoxi-version="4.110.0" class="is-chrome theme-new-light" dir="ltr"><head>
+  <title>
+    IDS Enterprise
+  </title>
+
+  <!-- Meta Info -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="version" content="4.110.0">
+  <meta name="commit" content="">
+
+  <script src="//latest-enterprise.demo.design.infor.com/js/jquery-3.7.1.js"></script>
+  <script src="//latest-enterprise.demo.design.infor.com/js/d3.v7.js"></script>
+
+
+    <script src="//latest-enterprise.demo.design.infor.com/js/sohoxi.js"></script>
+
+  <!-- Supplying the culture in the head is supported
+  <script src="//latest-enterprise.demo.design.infor.com/js/sohoxi.js?v=MTIuMC4wLjAuMQ"></script>
+  <script src="../../js/cultures/en-US.js"></script>-->
+
+  <!-- Do not use this going forward due to GDPR Issues. This will be deprecated soon. -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600&amp;display=swap" rel="stylesheet">
+
+  <!-- Test and use this new style sheet in your demo app before we deprecate google apis -->
+  <!-- Uncomment these lines to test
+    <link rel="stylesheet" id="font-faces" href="//latest-enterprise.demo.design.infor.com/css/font-face.css" type="text/css" />
+  -->
+  <link rel="stylesheet" id="sohoxi-stylesheet" href="//latest-enterprise.demo.design.infor.com/css/theme-new-light.css" type="text/css">
+  <script>
+    var colors;
+    var longThemeName = 'theme-new-light';
+    var shortThemeName = 'new';
+    var blockUI = '/controls/app/views/layout-empty.html'.indexOf('embedded') > -1 ? false : true;
+
+
+    // If Initialize isnt called need to defer this
+    var handleUrl = function(a, eventType) {
+      if (!a) {
+        return;
+      }
+
+      // Reset event type if it doesn't match up
+      var eventTypes = ['theme', 'color'];
+      if (eventType && eventTypes.indexOf(eventType) === -1) {
+        eventType === undefined;
+      }
+
+      // Setup theme if applicable
+      var queryParams = [];
+      var hasTheme = false;
+      var themeStringParts = [];
+      if ((eventType && eventType !== 'color')) {
+        hasTheme = typeof a.theme === 'string';
+        themeStringParts = a.theme.split('-');
+        queryParams.push('theme=' + themeStringParts[1]);
+        queryParams.push('mode=' + themeStringParts[2]);
+      }
+
+      // Setup color if applicable
+      var hasColor = false;
+      if (eventType && eventType !== 'theme') {
+        if (typeof a.colors === 'string') {
+          hasColor = true;
+          queryParams.push('colors=' + a.colors.replace('#', ''));
+        } else if (a.colors && typeof a.colors.header === 'string') {
+          hasColor = true;
+          queryParams.push('colors=' + a.colors.header.replace('#', ''));
+        }
+      }
+
+      function stringifyParams(theseParams) {
+        var str = '';
+        theseParams.forEach(function (param) {
+          var and = '';
+          if (queryParams[0] !== param) {
+            and = '&';
+          }
+          str += and + param;
+        });
+        return str;
+      }
+
+      // Used for filtering out existing theme-related parameters from a
+      // @param {string} queryString the URL string
+      // @returns {array} of existing Parameters in string form.
+      // Example: [`locale=ar-EG`, `useFlexToolbar=true`]
+      function existingThemeParamFilter(queryString) {
+        var existingParams = window.location.search
+          .replace('?', '')
+          .split('&');
+        existingParams = existingParams.filter(function (param) {
+          if (!param || param.length < 1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('theme=') > -1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('mode=') > -1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('variant=') > -1) {
+            return false;
+          }
+          if (hasColor && param.indexOf('colors=') > -1) {
+            return false;
+          }
+          return true;
+        });
+        return existingParams;
+      }
+
+      if (queryParams.length) {
+        // Persist existing additional params.
+        // Also, overwrite existing color/theme/mode values if they've been added above.
+        queryParams = queryParams.concat(existingThemeParamFilter(window.location.search));
+
+        // Update URL in the browser window
+        var pageUrl = '?' + stringifyParams(queryParams);
+        window.history.pushState('', '', pageUrl);
+      }
+    };
+
+    $('html')
+      .personalize({
+        colors: colors,
+        theme: longThemeName,
+        blockUI: blockUI
+      })
+      .on('colorschanged', function (e, a) {
+        handleUrl(a, 'color');
+      })
+      .on('themechanged', function (e, a) {
+        const parts = a.theme.split('-');
+        handleUrl(a, 'theme');
+
+        if (parts[1] !== shortThemeName) {
+          shortThemeName = parts[1];
+          shortThemeName = shortThemeName.replace('soho', 'classic').replace('uplift', 'new');
+          shortThemeName = shortThemeName.replace('new', 'new-default');
+          var path = window.location.pathname;
+
+          if (path.indexOf('/icons/') > -1) {
+            $('body').append('<div class="personalize-overlay" style="background: rgb(240, 240, 240); opacity: 0.933013;"></div>')
+            location.reload();
+          } else {
+            $.get('//latest-enterprise.demo.design.infor.com/api/icons?theme=' + shortThemeName, function(htmlStr) {
+              htmlStr = htmlStr.replace('</div>', '');
+              htmlStr = htmlStr.replace('<div class="svg-icons">', '');
+              $('div.svg-icons').empty().append(htmlStr);
+            },'html');
+
+            $.get('//latest-enterprise.demo.design.infor.com/api/icons-empty?theme=' + shortThemeName, function(htmlStr) {
+              htmlStr = htmlStr.replace('</div>', '');
+              htmlStr = htmlStr.replace('<div class="svg-icons-empty">', '');
+              $('div.svg-icons-empty').empty().append(htmlStr);
+            },'html');
+          }
+        }
+
+        setTimeout(() => {
+          const wcTheme = $('#ids-stylesheet');
+          if (wcTheme && wcTheme.length) {
+            const attr = wcTheme.attr('href');
+            if (parts[1] === 'new') {
+              wcTheme.attr('href', attr.replace('-light', `-${parts[2]}`).replace('-dark', `-${parts[2]}`).replace('-contrast', `-${parts[2]}`))
+            }
+          }
+        }, 100);
+      });
+  </script>
+
+  <link rel="stylesheet" href="//latest-enterprise.demo.design.infor.com/css/demo.css" type="text/css">
+<script src="https://latest-enterprise.demo.design.infor.com/js/cultures/en-US.js"></script></head>
+<body><div class="row top-padding">
+  <div class="twelve columns">
+    <div class="error-code-container">
+        <h1 class="error-code-number">404</h1>
+        <p class="error-code-standard">File "/controls/app/views/components/initialize/test-blank.html" was not found</p>
+    </div>
+
+    <p class="text-center">
+      <a class="hyperlink hide-focus" href="/components/initialize">See similar pages here</a>
+    </p>
+  </div>
+</div>
+
+
+
+<script>
+  // Initialize all IDS Enterprise Controls and set the locale
+  var initialLocale = 'en-US';
+  initialLocale = 'en-US';
+
+  $('body').initialize({locale: initialLocale});
+</script>
+
+
+<div id="ids-modal-root" class="modal-page-container" aria-hidden="true"><div class="overlay" aria-hidden="true"></div></div></body></html>

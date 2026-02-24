@@ -1,0 +1,12 @@
+
+        .row.demo .icon {
+          margin-top: -9px;
+        }
+
+        .icon-container {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          margin-top: 10px;
+        }
+      

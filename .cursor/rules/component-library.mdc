@@ -1,0 +1,153 @@
+---
+description: How to look up, reference, and use IDS Enterprise components from the local Components Library. Apply whenever generating any UI component, template HTML, or IDS-related TypeScript.
+globs: ["**/*.ts", "**/*.html"]
+alwaysApply: true
+author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+---
+
+# Component Library — Lookup & Usage Rules
+
+## Where the Library Lives
+The component reference library is located at:
+```
+Mashup Manager/Components Library/
+  ids-enterprise-ng/          ← TypeScript type definitions (Angular wrappers)
+    lib/<component>/
+      soho-<component>.component.d.ts   ← @Inputs, @Outputs, public API
+      soho-<component>.module.d.ts
+      index.d.ts
+  scraped_components/         ← Live HTML examples from the IDS demo site
+    <component-slug>/
+      example-index_html/page.html      ← Basic usage example
+      example-<variant>_html/page.html  ← Variant examples
+    _index.json               ← Master list of all components with slugs
+```
+
+---
+
+## MANDATORY: Always Consult the Library Before Generating a Component
+
+Before writing any IDS component implementation:
+
+### Step 1 — Find the component slug
+Open `Mashup Manager/Components Library/scraped_components/_index.json` and find the matching entry. Use the `"slug"` field to locate the correct folder.
+
+### Step 2 — Read the TypeScript definition
+Open `Mashup Manager/Components Library/ids-enterprise-ng/lib/<component-name>/soho-<component>.component.d.ts`.
+This file defines:
+- All `@Input()` property names and types
+- All `@Output()` event emitter names and payload types  
+- Public methods you can call via `@ViewChild` reference
+- Available option interfaces (e.g. `SohoButtonOptions`, `SohoDataGridOptions`)
+
+### Step 3 — Read the HTML examples
+Open `Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html` to see the canonical HTML markup for that component. Use further `example-*_html/page.html` files for variants (grouping, paging, editable, etc.).
+
+### Step 4 — Write the implementation
+Use ONLY the documented `@Input`/`@Output` names from the `.d.ts`. Do NOT invent property names.
+
+---
+
+## Component Name Mapping (Scraped Slug → IDS NG Module)
+
+| UI Concept          | Scraped Slug        | IDS NG Selector            | .d.ts path                          |
+|---------------------|---------------------|----------------------------|-------------------------------------|
+| Data Grid / Table   | `datagrid`          | `soho-datagrid`            | `lib/datagrid/`                     |
+| Dropdown            | `dropdown`          | `soho-dropdown`            | `lib/dropdown/`                     |
+| Button              | `button`            | `soho-button`              | `lib/button/`                       |
+| Input / Text Field  | `input`             | `soho-input`               | `lib/input/`                        |
+| Date Picker         | `datepicker`        | `soho-datepicker`          | `lib/datepicker/`                   |
+| Time Picker         | `timepicker`        | `soho-timepicker`          | `lib/timepicker/`                   |
+| Modal / Dialog      | `modal`             | `soho-modal-dialog`        | `lib/modal-dialog/`                 |
+| Tabs                | `tabs`              | `soho-tabs`                | `lib/tabs/`                         |
+| Accordion           | `accordion`         | `soho-accordion`           | `lib/accordion/`                    |
+| Toolbar             | `toolbar`           | `soho-toolbar`             | `lib/toolbar/`                      |
+| Toolbar Flex        | `toolbar-flex`      | `soho-toolbar-flex`        | `lib/toolbar-flex/`                 |
+| Lookup              | `lookup`            | `soho-lookup`              | `lib/lookup/`                       |
+| Listview            | `listview`          | `soho-listview`            | `lib/listview/`                     |
+| Tree                | `tree`              | `soho-tree`                | `lib/tree/`                         |
+| Checkbox            | `checkboxes`        | `soho-checkbox`            | `lib/checkbox/`                     |
+| Radio Button        | `radios`            | `soho-radiobutton`         | `lib/radiobutton/`                  |
+| Textarea            | `textarea`          | `soho-textarea`            | `lib/textarea/`                     |
+| Toast               | `toast`             | `soho-toast`               | `lib/toast/`                        |
+| Tooltip             | `tooltip`           | `soho-tooltip`             | `lib/tooltip/`                      |
+| Searchfield         | `searchfield`       | `soho-searchfield`         | `lib/searchfield/`                  |
+| Slider              | `slider`            | `soho-slider`              | `lib/slider/`                       |
+| Spinbox             | `spinbox`           | `soho-spinbox`             | `lib/spinbox/`                      |
+| Progress            | `progress`          | `soho-progress`            | `lib/progress/`                     |
+| Tag                 | `tag`               | `soho-tag`                 | `lib/tag/`                          |
+| Card                | `cards`             | `soho-card`                | `lib/card/`                         |
+| Message             | `message`           | `soho-message`             | `lib/message/`                      |
+| Alert               | `alerts`            | `soho-alert`               | `lib/alert/`                        |
+| Breadcrumb          | `breadcrumb`        | `soho-breadcrumb`          | `lib/breadcrumb/`                   |
+| Wizard              | `wizard`            | `soho-wizard`              | `lib/wizard/`                       |
+| Homepage            | `homepage`          | `soho-homepage`            | `lib/homepage/`                     |
+| Pie Chart           | `pie`               | `soho-pie`                 | `lib/pie/`                          |
+| Bar Chart           | `bar`               | `soho-bar`                 | `lib/bar/`                          |
+| Line Chart          | `line`              | `soho-line`                | `lib/line/`                         |
+| Donut Chart         | `donut`             | `soho-donut`               | `lib/pie/`                          |
+| Sparkline           | `sparkline`         | `soho-sparkline`           | `lib/sparkline/`                    |
+| Busy Indicator      | `busyindicator`     | `soho-busy-indicator`      | `lib/busyindicator/`                |
+| Empty Message       | `emptymessage`      | `soho-empty-message`       | `lib/emptymessage/`                 |
+| Expandable Area     | `expandablearea`    | `soho-expandable-area`     | `lib/expandablearea/`               |
+| Pager               | `pager`             | `soho-pager`               | `lib/pager/`                        |
+| Splitter            | `splitter`          | `soho-splitter`            | `lib/splitter/`                     |
+| Swap List           | `swaplist`          | `soho-swaplist`            | `lib/swaplist/`                     |
+| Step Chart          | `stepchart`         | `soho-stepchart`           | `lib/stepchart/`                    |
+| File Upload         | `fileupload`        | `soho-fileupload`          | `lib/fileupload/`                   |
+| Color Picker        | `colorpicker`       | `soho-colorpicker`         | `lib/colorpicker/`                  |
+| Popdown             | `popdown`           | `soho-popdown`             | `lib/popdown/`                      |
+| Popup Menu          | `popupmenu`         | `soho-popupmenu`           | `lib/popupmenu/`                    |
+| Context Menu        | `contextmenu`       | `soho-context-menu`        | `lib/context-menu/`                 |
+| Module Nav          | `module-nav`        | `soho-module-nav`          | `lib/module-nav/`                   |
+| Masthead            | `masthead`          | `soho-masthead`            | `lib/masthead/`                     |
+| Header              | `header`            | `soho-header`              | `lib/header/`                       |
+| Editor (Rich Text)  | `editor`            | `soho-editor`              | `lib/editor/`                       |
+| Autocomplete        | `autocomplete`      | `soho-autocomplete`        | `lib/autocomplete/`                 |
+| Month View          | `monthview`         | `soho-monthview`           | `lib/monthview/`                    |
+| Week View           | `week-view`         | `soho-week-view`           | `lib/week-view/`                    |
+| Hierarchy           | `hierarchy`         | `soho-hierarchy`           | `lib/hierarchy/`                    |
+
+---
+
+## Template Examples
+
+### Correct usage (reading from library first)
+```html
+<!-- soho-button: @Input sohoButton="primary" verified from lib/button/soho-button.component.d.ts -->
+<button soho-button="primary" (click)="onSave()">Save</button>
+
+<!-- soho-datagrid: @Inputs [columns] [dataset] verified from lib/datagrid/ -->
+<soho-datagrid
+  [columns]="columns"
+  [dataset]="rows"
+  [selectable]="'single'"
+  (rowActivated)="onRowActivated($event)">
+</soho-datagrid>
+```
+
+### Forbidden — DO NOT do this
+```html
+<!-- ❌ Never initialize IDS controls via jQuery in templates -->
+<div id="my-grid"></div>
+<!-- ❌ Never guess prop names — always verify in the .d.ts -->
+<soho-datagrid [data]="rows">   <!-- WRONG: property is [dataset] -->
+```
+
+---
+
+## Checking Available Options Interfaces
+
+Each component exposes a typed `Options` interface. Example lookup for `SohoDataGridOptions`:
+1. Open `lib/datagrid/soho-datagrid.component.d.ts`
+2. Find `set gridOptions(gridOptions: SohoDataGridOptions)` — this shows the options type
+3. Check `ids-enterprise-typings` (via the `index.d.ts`) for the full `SohoDataGridOptions` interface shape
+
+---
+
+## Discovering New Components
+
+If you need a component not listed above:
+1. Search `scraped_components/_index.json` for the component by name.
+2. Map its slug to the matching folder in `ids-enterprise-ng/lib/`.
+3. Read the `.component.d.ts` and at least one `example-*_html/page.html` before generating code.

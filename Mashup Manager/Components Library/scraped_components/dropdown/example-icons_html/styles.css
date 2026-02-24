@@ -1,0 +1,11 @@
+
+        /* Defines rules for the custom icon style */
+        .custom-icon {
+          border: 1px solid var(--ids-color-slate-100);
+          border-radius: 2px;
+          height: 18px;
+          margin-inline-end: 8px;
+          top: 3px;
+          width: 18px;
+        }
+      

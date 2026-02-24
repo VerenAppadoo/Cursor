@@ -1,0 +1,44 @@
+.purchase-orders-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  .busy-indicator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  .datagrid-container {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+    
+    soho-datagrid {
+      height: 100%;
+    }
+  }
+}
+
+// Améliorer la lisibilité du toolbar
+soho-toolbar-flex {
+  border-bottom: 1px solid var(--ids-color-palette-slate-30);
+  background-color: var(--ids-color-palette-white);
+  
+  h1 {
+    font-weight: 600;
+    color: var(--ids-color-palette-slate-90);
+  }
+  
+  button[soho-button] {
+    white-space: nowrap;
+  }
+}
+
+// Styles pour le champ de recherche
+input[soho-searchfield] {
+  min-width: 300px;
+}

@@ -1,0 +1,11 @@
+
+          /** Purpose of showing the hitbox area */
+        
+          .margin-right-20 {
+            margin-right: 20px;
+          }
+        
+          .hitbox-area {
+            border: 1px dashed black;
+          }  
+      

@@ -1,0 +1,16 @@
+
+        .chart-legend.is-bottom {
+          border-top: 0;
+          text-align: center;
+        }
+
+        .chart-legend-item {
+          display: inline-block !important;
+          padding: 3px !important;
+          width: auto !important;
+        }
+
+        .chart-legend.is-bottom.adjusted-height .chart-legend-item-text {
+          top: -3px;
+        }
+      

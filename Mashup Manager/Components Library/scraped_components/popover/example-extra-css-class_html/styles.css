@@ -1,0 +1,15 @@
+
+        .green {
+          background-color: #d5f6c0 !important;
+          box-shadow: none !important;
+        }
+
+        .green .arrow::after {
+          border-right-color: #d5f6c0 !important;
+        }
+
+        .dark-text,
+        .dark-text p {
+          color: #000000 !important;
+        }
+      

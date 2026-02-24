@@ -1,0 +1,262 @@
+================================================================================
+CURSOR CHAT — MASHUP PROMPT TEMPLATES
+================================================================================
+Author : Veren Appadoo  <veren.appadoo@spoonconsulting.com>
+         Spoon Consulting
+Updated: 2026-02-23
+
+HOW TO USE
+----------
+1. Pick the prompt that matches what you want to do.
+2. Replace everything between < > with your actual values.
+3. Copy the full block and paste it into Cursor Chat.
+
+================================================================================
+PROMPT 1 — CREATE A NEW MASHUP PROJECT FROM SCRATCH
+================================================================================
+
+Create a new Odin mashup project with the following details:
+
+Project name : <my-project-name>
+Purpose      : <Describe what the mashup does — e.g. "Manage purchase orders,
+                allow users to search, create and validate orders in M3">
+
+Steps to run in the terminal:
+1. cd "Mashup Manager/Projects"
+2. Run: odin new
+3. Answer the interactive prompts as follows:
+   - "What is the name of the project?"          → <my-project-name>
+   - "Which view framework do you want to use?"   → Angular
+   - "Which style library do you want to use?"    → SoHo (Infor Design System)
+   - "What is the URL of your M3 environment?"    → <M3 environment URL, e.g. https://example.com:8080>
+   - "Should Git be used for the project?"        → No
+   - "Should dependencies be installed?"          → Yes
+4. Once odin new completes, run:
+      cd <my-project-name>
+      npm install
+      odin serve
+
+The mashup should include the following pages / features:
+- <Feature 1 — e.g. A search page with a toolbar and a data grid listing orders>
+- <Feature 2 — e.g. A detail modal form to view/edit a selected order>
+- <Feature 3 — e.g. A dashboard homepage with KPI cards>
+
+IDS components to use:
+- <e.g. soho-toolbar-flex for the page header>
+- <e.g. soho-datagrid for the main list>
+- <e.g. soho-modal-dialog for the detail form>
+- <e.g. soho-dropdown, soho-datepicker, soho-input for form fields>
+
+Data / M3 API calls:
+- <e.g. Call MMS200MI / LstItems to populate the grid>
+- <e.g. Use mock data for now>
+
+Rules to follow (already loaded in this workspace):
+- Consult Mashup Manager/Components Library before generating any IDS component
+- Follow all rules in .cursor/rules/
+- Read matching patterns from Mashup Manager/Projects Examples/ before generating
+  services, components, stores, or M3 API calls
+
+================================================================================
+PROMPT 2 — ADD A SINGLE COMPONENT TO AN EXISTING PROJECT
+================================================================================
+
+Add a new <component-name> component to the mashup at:
+<path — e.g. Mashup Manager/Projects/my-project/src/app/features/orders/components/>
+
+What it should do:
+<Describe the component — e.g. "A searchable data grid showing order lines,
+ with single-row selection that emits the selected line to the parent">
+
+Inputs  (@Input):
+- <e.g. orderId: string — the parent order ID>
+- <e.g. isReadOnly: boolean — disables editing>
+
+Outputs (@Output):
+- <e.g. lineSelected — emits the selected SohoDataGridRow>
+
+IDS component to use: <e.g. soho-datagrid>
+
+Before generating:
+1. Read: Mashup Manager/Components Library/ids-enterprise-ng/lib/<ids-component>/soho-<ids-component>.component.d.ts
+2. Read: Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html
+3. Read a similar component in Mashup Manager/Projects Examples/ for code style reference
+
+Follow all rules in .cursor/rules/mashup-coding-rules.mdc
+
+================================================================================
+PROMPT 3 — GENERATE A FULL FEATURE PAGE (LIST + DETAIL)
+================================================================================
+
+Generate a full feature page for "<Feature Name>" inside the mashup at:
+<path — e.g. Mashup Manager/Projects/my-project/src/app/features/>
+
+PAGE STRUCTURE
+--------------
+1. Toolbar (soho-toolbar-flex):
+   - Title: "<Page Title>"
+   - Primary "Add New" button
+   - Search field (soho-searchfield)
+
+2. Data Grid (soho-datagrid):
+   - Columns:
+     - <Column 1: field="<fieldName>", name="<Label>">
+     - <Column 2: field="<fieldName>", name="<Label>">
+     - <Column 3: field="<fieldName>", name="<Label>">
+   - Single-row selection
+   - On row activated: open the detail modal
+
+3. Modal Dialog (soho-modal-dialog):
+   - Opens on row click or "Add New"
+   - Form fields:
+     - <Field 1: label, IDS component type, e.g. "Customer — soho-dropdown">
+     - <Field 2: label, IDS component type, e.g. "Order Date — soho-datepicker">
+     - <Field 3: label, IDS component type, e.g. "Notes — soho-textarea">
+   - Save button (primary) and Cancel button
+
+DATA MODEL
+----------
+<Paste your TypeScript interface here, e.g.:
+
+interface Order {
+  id: string;
+  customerName: string;
+  status: 'open' | 'closed' | 'pending';
+  orderDate: string;
+}
+>
+
+DATA SOURCE
+-----------
+<e.g. "Call M3 program MMS200MI transaction LstItems" OR "Use a mock array for now">
+
+Rules to follow:
+- Consult the component library (.d.ts + example HTML) for every IDS component
+- Follow .cursor/rules/mashup-coding-rules.mdc
+- Follow .cursor/rules/odin-framework.mdc
+- Match code style from Mashup Manager/Projects Examples/Quick-Price-Quote/
+
+================================================================================
+PROMPT 4 — GENERATE AN M3 API SERVICE
+================================================================================
+
+Generate an Angular service to call the following M3 API inside the mashup at:
+<path — e.g. Mashup Manager/Projects/my-project/src/app/features/orders/services/>
+
+Service name : <e.g. OrderService>
+File name    : <e.g. order.service.ts>
+
+M3 API calls to implement:
+
+--- Call 1 ---
+Method name  : <e.g. getOrderList>
+Program      : <e.g. OIS100MI>
+Transaction  : <e.g. LstOrderHead>
+Input fields :
+  - <ORTP: order type>
+  - <CUNO: customer number>
+Output fields to use:
+  - <ORNO: order number>
+  - <CUNM: customer name>
+  - <ORST: status>
+
+--- Call 2 (if needed) ---
+Method name  : <e.g. getOrderLine>
+Program      : <e.g. OIS100MI>
+Transaction  : <e.g. LstOrderLines>
+Input fields :
+  - <ORNO: order number>
+Output fields to use:
+  - <PONR: line number>
+  - <ITNO: item number>
+  - <ORQT: ordered qty>
+
+Follow the IMIRequest + firstValueFrom pattern from:
+  Mashup Manager/Projects Examples/Quick-Price-Quote/src/app/features/home/services/app-settings.service.ts
+
+Follow all rules in .cursor/rules/
+
+================================================================================
+PROMPT 5 — GENERATE A DASHBOARD / HOMEPAGE
+================================================================================
+
+Generate a dashboard homepage for the mashup at:
+<path — e.g. Mashup Manager/Projects/my-project/src/app/features/home/>
+
+Use soho-homepage as the container widget layout.
+
+Widgets to include:
+- <Widget 1 — e.g. KPI card (soho-card) showing total open orders>
+- <Widget 2 — e.g. Bar chart (soho-bar) showing orders by month>
+- <Widget 3 — e.g. Listview (soho-listview) showing the 10 most recent activities>
+- <Widget 4 — e.g. Donut chart (soho-donut) showing order status breakdown>
+
+For each widget:
+1. Read Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/*.component.d.ts
+2. Read Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html
+
+Data: <use mock/static data for now OR call M3 program: ...>
+
+Follow all rules in .cursor/rules/
+
+================================================================================
+PROMPT 6 — FIX / DEBUG AN IDS COMPONENT
+================================================================================
+
+The <component-name> component at:
+<file path — e.g. Mashup Manager/Projects/my-project/src/app/features/orders/components/order-list.component.ts>
+
+is not working correctly.
+
+Problem:
+<Describe it — e.g. "The datagrid shows no data even though the dataset array is populated"
+ OR "The dropdown is not displaying the options"
+ OR "The modal dialog does not open when the button is clicked">
+
+Please:
+1. Re-read: Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/soho-<component>.component.d.ts
+2. Verify all @Input property names match exactly what is documented
+3. Check that IDS component API calls are inside ngAfterViewInit, not ngOnInit
+4. Check the standalone component imports array includes the correct Soho module
+5. Provide the corrected implementation with a clear explanation of what was wrong
+
+================================================================================
+PROMPT 7 — GENERATE A STORE (STATE MANAGEMENT)
+================================================================================
+
+Generate a feature store for "<Feature Name>" inside the mashup at:
+<path — e.g. Mashup Manager/Projects/my-project/src/app/features/orders/>
+
+Store name : <e.g. OrderStore>
+File name  : <e.g. order.store.ts>
+
+State interface properties:
+- <e.g. orders: Order[] — list of orders loaded from M3>
+- <e.g. selectedOrder: Order | null — currently selected order>
+- <e.g. isLoading: boolean — true while API calls are in progress>
+- <e.g. errorMessage: string | null — last error message>
+
+Initial state:
+- <e.g. orders: [], selectedOrder: null, isLoading: false, errorMessage: null>
+
+Follow the Store<T> / BehaviorSubject pattern from:
+  Mashup Manager/Projects Examples/Quick-Price-Quote/src/app/core/models/store.ts
+  Mashup Manager/Projects Examples/Quick-Price-Quote/src/app/core/services/global.store.ts
+
+Follow all rules in .cursor/rules/
+
+================================================================================
+TIPS FOR BETTER RESULTS
+================================================================================
+
+- Be specific about data shapes — paste the TypeScript interface directly.
+- Name the exact IDS components — Cursor will look them up in the library.
+- Mention file paths of existing files you want to modify.
+- Reference a specific example to reuse:
+    "Use the same pattern as Mashup Manager/Projects Examples/Quick-Price-Quote/
+     src/app/features/home/components/search/search/search.component.ts"
+- One feature per prompt — break large mashups into multiple focused prompts.
+- If unsure of an M3 program/transaction, just describe what data you need
+  and let Cursor suggest the right MI call based on the project examples.
+
+================================================================================

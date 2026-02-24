@@ -1,0 +1,662 @@
+[
+  {
+    "name": "About",
+    "slug": "about",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/about/list"
+  },
+  {
+    "name": "Accordion",
+    "slug": "accordion",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/accordion/list"
+  },
+  {
+    "name": "Actionsheet",
+    "slug": "actionsheet",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/actionsheet/list"
+  },
+  {
+    "name": "Alerts",
+    "slug": "alerts",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/alerts/list"
+  },
+  {
+    "name": "Applicationmenu",
+    "slug": "applicationmenu",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/applicationmenu/list"
+  },
+  {
+    "name": "Area",
+    "slug": "area",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/area/list"
+  },
+  {
+    "name": "Arrange",
+    "slug": "arrange",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/arrange/list"
+  },
+  {
+    "name": "Autocomplete",
+    "slug": "autocomplete",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/autocomplete/list"
+  },
+  {
+    "name": "Badges",
+    "slug": "badges",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/badges/list"
+  },
+  {
+    "name": "Bar",
+    "slug": "bar",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/bar/list"
+  },
+  {
+    "name": "Bar Grouped",
+    "slug": "bar-grouped",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/bar-grouped/list"
+  },
+  {
+    "name": "Bar Stacked",
+    "slug": "bar-stacked",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/bar-stacked/list"
+  },
+  {
+    "name": "Base Tag",
+    "slug": "base-tag",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/base-tag/list"
+  },
+  {
+    "name": "Blockgrid",
+    "slug": "blockgrid",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/blockgrid/list"
+  },
+  {
+    "name": "Breadcrumb",
+    "slug": "breadcrumb",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/breadcrumb/list"
+  },
+  {
+    "name": "Breakpoints",
+    "slug": "breakpoints",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/breakpoints/list"
+  },
+  {
+    "name": "Bubble",
+    "slug": "bubble",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/bubble/list"
+  },
+  {
+    "name": "Builder",
+    "slug": "builder",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/builder/list"
+  },
+  {
+    "name": "Bullet",
+    "slug": "bullet",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/bullet/list"
+  },
+  {
+    "name": "Busyindicator",
+    "slug": "busyindicator",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/busyindicator/list"
+  },
+  {
+    "name": "Button",
+    "slug": "button",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/button/list"
+  },
+  {
+    "name": "Calendar",
+    "slug": "calendar",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/calendar/list"
+  },
+  {
+    "name": "Cards",
+    "slug": "cards",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/cards/list"
+  },
+  {
+    "name": "Charts",
+    "slug": "charts",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/charts/list"
+  },
+  {
+    "name": "Checkboxes",
+    "slug": "checkboxes",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/checkboxes/list"
+  },
+  {
+    "name": "Circlepager",
+    "slug": "circlepager",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/circlepager/list"
+  },
+  {
+    "name": "Colorpicker",
+    "slug": "colorpicker",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/colorpicker/list"
+  },
+  {
+    "name": "Colors",
+    "slug": "colors",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/colors/list"
+  },
+  {
+    "name": "Column",
+    "slug": "column",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/column/list"
+  },
+  {
+    "name": "Column Grouped",
+    "slug": "column-grouped",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/column-grouped/list"
+  },
+  {
+    "name": "Column Stacked",
+    "slug": "column-stacked",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/column-stacked/list"
+  },
+  {
+    "name": "Completion Chart",
+    "slug": "completion-chart",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/completion-chart/list"
+  },
+  {
+    "name": "Compositeform",
+    "slug": "compositeform",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/compositeform/list"
+  },
+  {
+    "name": "Contextmenu",
+    "slug": "contextmenu",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/contextmenu/list"
+  },
+  {
+    "name": "Contextualactionpanel",
+    "slug": "contextualactionpanel",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/contextualactionpanel/list"
+  },
+  {
+    "name": "Counts",
+    "slug": "counts",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/counts/list"
+  },
+  {
+    "name": "Css Utilities",
+    "slug": "css-utilities",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/css-utilities/list"
+  },
+  {
+    "name": "Datagrid",
+    "slug": "datagrid",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/datagrid/list"
+  },
+  {
+    "name": "Datepicker",
+    "slug": "datepicker",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/datepicker/list"
+  },
+  {
+    "name": "Donut",
+    "slug": "donut",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/donut/list"
+  },
+  {
+    "name": "Drag",
+    "slug": "drag",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/drag/list"
+  },
+  {
+    "name": "Dropdown",
+    "slug": "dropdown",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/dropdown/list"
+  },
+  {
+    "name": "Editor",
+    "slug": "editor",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/editor/list"
+  },
+  {
+    "name": "Emptymessage",
+    "slug": "emptymessage",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/emptymessage/list"
+  },
+  {
+    "name": "Environment",
+    "slug": "environment",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/environment/list"
+  },
+  {
+    "name": "Error Page",
+    "slug": "error-page",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/error-page/list"
+  },
+  {
+    "name": "Expandablearea",
+    "slug": "expandablearea",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/expandablearea/list"
+  },
+  {
+    "name": "Field Filter",
+    "slug": "field-filter",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/field-filter/list"
+  },
+  {
+    "name": "Field Options",
+    "slug": "field-options",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/field-options/list"
+  },
+  {
+    "name": "Fieldset",
+    "slug": "fieldset",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/fieldset/list"
+  },
+  {
+    "name": "Fileupload",
+    "slug": "fileupload",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/fileupload/list"
+  },
+  {
+    "name": "Fileupload Advanced",
+    "slug": "fileupload-advanced",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/fileupload-advanced/list"
+  },
+  {
+    "name": "Fontpicker",
+    "slug": "fontpicker",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/fontpicker/list"
+  },
+  {
+    "name": "Form",
+    "slug": "form",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/form/list"
+  },
+  {
+    "name": "Form Compact",
+    "slug": "form-compact",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/form-compact/list"
+  },
+  {
+    "name": "Grid",
+    "slug": "grid",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/grid/list"
+  },
+  {
+    "name": "Header",
+    "slug": "header",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/header/list"
+  },
+  {
+    "name": "Hierarchy",
+    "slug": "hierarchy",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/hierarchy/list"
+  },
+  {
+    "name": "Homepage",
+    "slug": "homepage",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/homepage/list"
+  },
+  {
+    "name": "Hyperlinks",
+    "slug": "hyperlinks",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/hyperlinks/list"
+  },
+  {
+    "name": "Icons",
+    "slug": "icons",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/icons/list"
+  },
+  {
+    "name": "Images",
+    "slug": "images",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/images/list"
+  },
+  {
+    "name": "Initialize",
+    "slug": "initialize",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/initialize/list"
+  },
+  {
+    "name": "Input",
+    "slug": "input",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/input/list"
+  },
+  {
+    "name": "Line",
+    "slug": "line",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/line/list"
+  },
+  {
+    "name": "Link",
+    "slug": "link",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/link/list"
+  },
+  {
+    "name": "Listbuilder",
+    "slug": "listbuilder",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/listbuilder/list"
+  },
+  {
+    "name": "Listview",
+    "slug": "listview",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/listview/list"
+  },
+  {
+    "name": "Locale",
+    "slug": "locale",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/locale/list"
+  },
+  {
+    "name": "Lookup",
+    "slug": "lookup",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/lookup/list"
+  },
+  {
+    "name": "Mask",
+    "slug": "mask",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/mask/list"
+  },
+  {
+    "name": "Masthead",
+    "slug": "masthead",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/masthead/list"
+  },
+  {
+    "name": "Message",
+    "slug": "message",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/message/list"
+  },
+  {
+    "name": "Modal",
+    "slug": "modal",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/modal/list"
+  },
+  {
+    "name": "Module Nav",
+    "slug": "module-nav",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/module-nav/list"
+  },
+  {
+    "name": "Monthview",
+    "slug": "monthview",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/monthview/list"
+  },
+  {
+    "name": "Multiselect",
+    "slug": "multiselect",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/multiselect/list"
+  },
+  {
+    "name": "Notification",
+    "slug": "notification",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/notification/list"
+  },
+  {
+    "name": "Notification Badge",
+    "slug": "notification-badge",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/notification-badge/list"
+  },
+  {
+    "name": "Page Layouts",
+    "slug": "page-layouts",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/page-layouts/list"
+  },
+  {
+    "name": "Page Patterns",
+    "slug": "page-patterns",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/page-patterns/list"
+  },
+  {
+    "name": "Pager",
+    "slug": "pager",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/pager/list"
+  },
+  {
+    "name": "Personalize",
+    "slug": "personalize",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/personalize/list"
+  },
+  {
+    "name": "Pie",
+    "slug": "pie",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/pie/list"
+  },
+  {
+    "name": "Place",
+    "slug": "place",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/place/list"
+  },
+  {
+    "name": "Popdown",
+    "slug": "popdown",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/popdown/list"
+  },
+  {
+    "name": "Popover",
+    "slug": "popover",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/popover/list"
+  },
+  {
+    "name": "Popupmenu",
+    "slug": "popupmenu",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/popupmenu/list"
+  },
+  {
+    "name": "Positive Negative",
+    "slug": "positive-negative",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/positive-negative/list"
+  },
+  {
+    "name": "Processindicator",
+    "slug": "processindicator",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/processindicator/list"
+  },
+  {
+    "name": "Progress",
+    "slug": "progress",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/progress/list"
+  },
+  {
+    "name": "Radar",
+    "slug": "radar",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/radar/list"
+  },
+  {
+    "name": "Radios",
+    "slug": "radios",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/radios/list"
+  },
+  {
+    "name": "Rating",
+    "slug": "rating",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/rating/list"
+  },
+  {
+    "name": "Renderloop",
+    "slug": "renderloop",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/renderloop/list"
+  },
+  {
+    "name": "Scatterplot",
+    "slug": "scatterplot",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/scatterplot/list"
+  },
+  {
+    "name": "Scrollaction",
+    "slug": "scrollaction",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/scrollaction/list"
+  },
+  {
+    "name": "Searchfield",
+    "slug": "searchfield",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/searchfield/list"
+  },
+  {
+    "name": "Signin",
+    "slug": "signin",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/signin/list"
+  },
+  {
+    "name": "Skiplink",
+    "slug": "skiplink",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/skiplink/list"
+  },
+  {
+    "name": "Slider",
+    "slug": "slider",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/slider/list"
+  },
+  {
+    "name": "Sparkline",
+    "slug": "sparkline",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/sparkline/list"
+  },
+  {
+    "name": "Spinbox",
+    "slug": "spinbox",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/spinbox/list"
+  },
+  {
+    "name": "Splitter",
+    "slug": "splitter",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/splitter/list"
+  },
+  {
+    "name": "Stats",
+    "slug": "stats",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/stats/list"
+  },
+  {
+    "name": "Stepchart",
+    "slug": "stepchart",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/stepchart/list"
+  },
+  {
+    "name": "Swaplist",
+    "slug": "swaplist",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/swaplist/list"
+  },
+  {
+    "name": "Swipe Action",
+    "slug": "swipe-action",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/swipe-action/list"
+  },
+  {
+    "name": "Switch",
+    "slug": "switch",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/switch/list"
+  },
+  {
+    "name": "Tabs",
+    "slug": "tabs",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tabs/list"
+  },
+  {
+    "name": "Tabs Header",
+    "slug": "tabs-header",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tabs-header/list"
+  },
+  {
+    "name": "Tabs Module",
+    "slug": "tabs-module",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tabs-module/list"
+  },
+  {
+    "name": "Tabs Multi",
+    "slug": "tabs-multi",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tabs-multi/list"
+  },
+  {
+    "name": "Tabs Vertical",
+    "slug": "tabs-vertical",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tabs-vertical/list"
+  },
+  {
+    "name": "Tag",
+    "slug": "tag",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tag/list"
+  },
+  {
+    "name": "Targeted Achievement",
+    "slug": "targeted-achievement",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/targeted-achievement/list"
+  },
+  {
+    "name": "Textarea",
+    "slug": "textarea",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/textarea/list"
+  },
+  {
+    "name": "Timeline",
+    "slug": "timeline",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/timeline/list"
+  },
+  {
+    "name": "Timepicker",
+    "slug": "timepicker",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/timepicker/list"
+  },
+  {
+    "name": "Toast",
+    "slug": "toast",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/toast/list"
+  },
+  {
+    "name": "Toolbar",
+    "slug": "toolbar",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/toolbar/list"
+  },
+  {
+    "name": "Toolbar Flex",
+    "slug": "toolbar-flex",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/toolbar-flex/list"
+  },
+  {
+    "name": "Toolbarsearchfield",
+    "slug": "toolbarsearchfield",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/toolbarsearchfield/list"
+  },
+  {
+    "name": "Tooltip",
+    "slug": "tooltip",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tooltip/list"
+  },
+  {
+    "name": "Tree",
+    "slug": "tree",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/tree/list"
+  },
+  {
+    "name": "Treemap",
+    "slug": "treemap",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/treemap/list"
+  },
+  {
+    "name": "Typography",
+    "slug": "typography",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/typography/list"
+  },
+  {
+    "name": "Validation",
+    "slug": "validation",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/validation/list"
+  },
+  {
+    "name": "Virtual Scroll",
+    "slug": "virtual-scroll",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/virtual-scroll/list"
+  },
+  {
+    "name": "Visibility",
+    "slug": "visibility",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/visibility/list"
+  },
+  {
+    "name": "Week View",
+    "slug": "week-view",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/week-view/list"
+  },
+  {
+    "name": "Wizard",
+    "slug": "wizard",
+    "list_url": "https://latest-enterprise.demo.design.infor.com/components/wizard/list"
+  }
+]

@@ -1,0 +1,20 @@
+
+        .form-responsive {
+          min-width: 320px;
+        }
+
+        .row:last-child {
+          margin-bottom: -10px;
+        }
+
+        .container.many-modal {
+          display: inline-flex;
+        }
+
+        .item {
+          height: 200px;
+          width: 200px;
+          background-color: orange;
+          margin: 15px;
+        }
+      

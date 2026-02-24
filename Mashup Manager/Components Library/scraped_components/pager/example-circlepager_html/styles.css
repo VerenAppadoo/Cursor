@@ -1,0 +1,22 @@
+
+  .example1 .slide-content {
+    height: 317px;
+    padding-top: 230px;
+    text-align: center;
+    width: 100%;
+  }
+  .example1 .slides .slide:nth-child(1) .slide-content,
+  .example1 .slides .slide:nth-child(4) .slide-content,
+  .example1 .slides .slide:nth-child(7) .slide-content {
+    background: url('//latest-enterprise.demo.design.infor.com/images/circlepager-bg-slide-1.png') 50% -30px no-repeat;
+  }
+  .example1 .slides .slide:nth-child(2) .slide-content,
+  .example1 .slides .slide:nth-child(5) .slide-content,
+  .example1 .slides .slide:nth-child(8) .slide-content {
+    background: url('//latest-enterprise.demo.design.infor.com/images/circlepager-bg-slide-2.png') 50% 0 no-repeat;
+  }
+  .example1 .slides .slide:nth-child(3) .slide-content,
+  .example1 .slides .slide:nth-child(6) .slide-content,
+  .example1 .slides .slide:nth-child(9) .slide-content {
+    background: url('//latest-enterprise.demo.design.infor.com/images/circlepager-bg-slide-3.png') 50% 20px no-repeat;
+  }

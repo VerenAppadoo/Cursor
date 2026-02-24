@@ -1,0 +1,35 @@
+
+        .dark-fill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background-color: lightgrey;
+          height: 120px;
+          width: 120px;
+        }
+        .white-fill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background-color: white;
+          border: 1px dotted #000000;
+          height: 120px;
+          width: 120px;
+        }
+        .normal-fill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px dotted transparent;
+          height: 120px;
+          width: 120px;
+        }
+        svg.icon-logo {
+          height: 68px;
+          width: 70px;
+        }
+        svg.icon-logo-primary {
+          height: 63px;
+          width: 112px;
+        }
+      

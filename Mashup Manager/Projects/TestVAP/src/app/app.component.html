@@ -1,0 +1,33 @@
+<soho-icons-new></soho-icons-new>
+<soho-icons-empty-new></soho-icons-empty-new>
+
+<div
+  soho-busyindicator
+  [activated]="isBusy"
+  [blockUI]="true"
+  [displayDelay]="0"
+  class="full-height"
+>
+  <div soho-toolbar-flex class="toolbar-section">
+    <soho-toolbar-flex-section [isTitle]="true">
+      <h2>Item Search</h2>
+    </soho-toolbar-flex-section>
+    <soho-toolbar-flex-section [isButtonSet]="true">
+      <button soho-button="primary" (click)="onSearchValues()">
+        Search Values
+      </button>
+    </soho-toolbar-flex-section>
+  </div>
+
+  <div
+    soho-datagrid
+    [columns]="columns"
+    [dataset]="dataset"
+    [selectable]="'single'"
+    [rowHeight]="'medium'"
+    [filterable]="true"
+    [emptyMessage]="emptyMessage"
+    (rowActivated)="onRowActivated($event)"
+    class="datagrid-container"
+  ></div>
+</div>

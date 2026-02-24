@@ -1,0 +1,11 @@
+
+        .six.columns {
+          max-width: 900px;
+          height: 250px;
+          margin-bottom: 60px;
+        }
+
+        .row:first-of-type {
+          padding-top: 10px;
+        }
+      

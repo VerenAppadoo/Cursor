@@ -1,0 +1,61 @@
+
+    body {
+      background-image: url("//latest-enterprise.demo.design.infor.com/images/signin.jpg");
+      background-size: cover;
+    }
+
+    input {
+      background-color: rgba(255,255,255, .3);
+    }
+
+    img {
+      margin-bottom: 35px;
+    }
+
+    @media (max-width: 1279px) {
+      body {
+        background-size: auto;
+      }
+    }
+
+    .btn-primary {
+      background-color: #603951;
+      border-color: #603951;
+    }
+
+    .btn-primary:hover {
+      background-color: #3E102C;
+      border-color: #3E102C;
+    }
+
+    .hyperlink {
+      color: #603951;
+    }
+
+    .hyperlink:hover:not([disabled]) {
+      color: #3E102C;
+      border-color: #3E102C;
+    }
+
+    .hyperlink:focus:not(.hide-focus) {
+      outline: 1px solid #603951;
+      outline-offset: 4px;
+    }
+
+    .powered-by {
+      color: #818080;
+      display: block;
+      font-size: 12px;
+      font-style: italic;
+      margin-top: 13px;
+    }
+
+    .powered-by .icon-logo {
+      display: inline;
+      height: 30px;
+      left: 10px;
+      margin: 0;
+      top: 11px;
+      width: 30px;
+    }
+  

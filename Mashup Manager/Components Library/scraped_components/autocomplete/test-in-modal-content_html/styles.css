@@ -1,0 +1,25 @@
+
+        /**
+         * In order to control the scrolling in the custom scrollable section
+         * (and prevent false positives from the standard Modal setup), we need to
+         * set the height on the outer wrappers to inherit height.
+         */
+        .custom-scrollable-modal .modal-body,
+        .custom-scrollable-modal .test-content-wrapper,
+        .custom-scrollable-modal .test-content {
+          max-height: inherit;
+        }
+
+        /* Fixes the padding in the custom mode */
+        .custom-scrollable-modal .modal-content .modal-body-wrapper {
+          padding: 5px 0;
+        }
+        .custom-scrollable-modal .test-content {
+          padding: 0 20px;
+        }
+
+        /* Sets a min-width on the `#h1-title` just for this sample, since we make it dynamic */
+        #h1-title {
+          min-width: 400px;
+        }
+      

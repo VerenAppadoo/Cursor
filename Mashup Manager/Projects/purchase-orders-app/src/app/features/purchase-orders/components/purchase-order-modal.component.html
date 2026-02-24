@@ -1,0 +1,77 @@
+<div class="purchase-order-modal">
+  <!-- Indicateur de chargement initial -->
+  <div *ngIf="isLoading" class="busy-indicator-container">
+    <div soho-busy-indicator [activated]="isLoading"></div>
+  </div>
+
+  <!-- Formulaire -->
+  <form *ngIf="!isLoading" class="purchase-order-form" (ngSubmit)="save()">
+    <!-- Sélection du fournisseur -->
+    <div class="field">
+      <label soho-label for="supplier" class="required">Fournisseur</label>
+      <select soho-dropdown 
+              id="supplier"
+              #supplierDropdown
+              [ngModel]="formData.SUNO"
+              (ngModelChange)="formData.SUNO = $event"
+              name="supplier"
+              required>
+        <option value="">Sélectionner un fournisseur</option>
+        <option *ngFor="let supplier of suppliers; trackBy: trackBySupplierSUNO" 
+                [value]="supplier.SUNO">
+          {{supplier.SUNO}} - {{supplier.SUNM}}
+        </option>
+      </select>
+    </div>
+
+    <!-- Date de commande -->
+    <div class="field">
+      <label soho-label for="orderDate" class="required">Date de Commande</label>
+      <input soho-datepicker
+             id="orderDate"
+             #orderDatePicker
+             [(ngModel)]="formData.ORDT"
+             name="orderDate"
+             [dateFormat]="'dd/MM/yyyy'"
+             [showToday]="true"
+             required>
+    </div>
+
+    <!-- Statut -->
+    <div class="field">
+      <label soho-label for="status" class="required">Statut</label>
+      <select soho-dropdown 
+              id="status"
+              [ngModel]="formData.PUSL"
+              (ngModelChange)="formData.PUSL = $event"
+              name="status"
+              required>
+        <option *ngFor="let status of statusOptions; trackBy: trackByStatusValue" 
+                [value]="status.value">
+          {{status.text}}
+        </option>
+      </select>
+    </div>
+
+    <!-- Notes -->
+    <div class="field">
+      <label soho-label for="notes">Notes</label>
+      <textarea soho-textarea
+                id="notes"
+                [(ngModel)]="formData.NTXT"
+                name="notes"
+                [maxLength]="500"
+                [autoGrow]="true"
+                [characterCounter]="true"
+                rows="4"
+                placeholder="Saisir des notes optionnelles...">
+      </textarea>
+    </div>
+
+    <!-- Indicateur de sauvegarde -->
+    <div *ngIf="isSaving" class="saving-indicator">
+      <div soho-busy-indicator [activated]="isSaving"></div>
+      <span>Sauvegarde en cours...</span>
+    </div>
+  </form>
+</div>

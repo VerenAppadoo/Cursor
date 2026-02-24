@@ -1,0 +1,11 @@
+
+        input.checkbox.lightsalmon + label::before {
+          background-color: lightsalmon;
+          border-color: lightsalmon;
+        }
+
+        input.checkbox.cornflowerblue + label::before {
+          background-color: cornflowerblue;
+          border-color: cornflowerblue;
+        }
+      

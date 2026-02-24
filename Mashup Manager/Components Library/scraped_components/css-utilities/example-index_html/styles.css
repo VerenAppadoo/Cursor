@@ -1,0 +1,19 @@
+
+        html[class*="-dark"] p[class*="01"],
+        html[class*="-dark"] div[class*="01"],
+        html[class*="-dark"] span[class*="01"] {
+          color: #7C7C83;
+        }
+
+        h2:not(.section-title) {
+          font-weight: 900;
+        }
+
+        .width-100 {
+          width: 100%;
+        }
+
+        .padding-16 {
+          padding: 16px;
+        }
+      

@@ -1,0 +1,14 @@
+
+        .unit-on-scene {
+          border-radius: 3px;
+          display: inline-block;
+          height: 30px;
+          line-height: 16px;
+          margin: 5px;
+          overflow-wrap: break-word;
+          padding: 9px 20px;
+          text-overflow: clip;
+          vertical-align: middle;
+          white-space: pre-line;
+        }
+      

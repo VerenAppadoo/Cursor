@@ -1,0 +1,42 @@
+
+        [title="html"] svg {
+          width: 50px;
+          margin-inline-start: -18px;
+          margin-inline-end: -7px;
+        }
+
+        [title="visual"] svg {
+          width: 70px;
+          margin-inline-start: -29px;
+          margin-inline-end: -7px;
+        }
+
+        [fill="#7928E1"] {
+          color: transparent;
+          fill: #7928E1 !important;
+        }
+
+        html[class*="dark"] {
+          [fill="#7928E1"] {
+            color: transparent;
+            fill: #c2a1f1 !important;
+          }
+        }
+
+        [title="user-avatar-dark"] svg {
+          background-color: #161618;
+        }
+
+        [title="logo-primary"] svg {
+          height: 63px;
+          width: 112px;
+        }
+
+        [title="logo-primary"] {
+          display: block;
+          position: relative;
+          left: -4px;
+          margin-top: -7px;
+          margin-bottom: -1px;
+        }
+      

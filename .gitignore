@@ -1,0 +1,16 @@
+# npm package - install via: npm install ids-enterprise-ng@18.2.4
+Mashup Manager/Components Library/ids-enterprise-ng/
+
+# Oversized generated test file (387MB - exceeds GitHub 100MB limit)
+Mashup Manager/Components Library/scraped_components/tabs-module/test-memory-leak_html/
+
+# Node modules in all projects
+**/node_modules/
+
+# Build outputs
+**/dist/
+**/.angular/
+
+# OS files
+.DS_Store
+Thumbs.db

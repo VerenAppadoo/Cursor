@@ -1,0 +1,43 @@
+{
+  "name": "purchase-orders-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npm run start:m3",
+    "build": "odin build",
+    "lint": "ng lint",
+    "start:m3": "odin serve --multi-tenant",
+    "start:ion": "odin serve --multi-tenant --ion-api"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@angular/animations": "^18.2.13",
+    "@angular/common": "^18.2.13",
+    "@angular/compiler": "^18.2.13",
+    "@angular/core": "^18.2.13",
+    "@angular/forms": "^18.2.13",
+    "@angular/platform-browser": "^18.2.13",
+    "@angular/platform-browser-dynamic": "^18.2.13",
+    "@angular/router": "^18.2.13",
+    "@infor-up/m3-odin": "7.1.1",
+    "@infor-up/m3-odin-angular": "7.1.1",
+    "@jsverse/transloco": "^7.6.1",
+    "ids-enterprise-ng": "^18.2.4",
+    "ids-enterprise-typings": "18.9.0",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.6.3",
+    "zone.js": "~0.14.10"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^18.2.4",
+    "@angular/cli": "^18.2.4",
+    "@angular/compiler-cli": "^18.2.13",
+    "@types/jquery": "3.5.16",
+    "@types/node": "^12.11.1",
+    "typescript": "~5.4.5"
+  }
+}

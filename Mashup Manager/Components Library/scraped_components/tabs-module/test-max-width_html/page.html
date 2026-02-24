@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="en-US" data-sohoxi-version="4.110.0" class="is-chrome theme-new-light" dir="ltr"><head>
+  <title>
+    IDS Enterprise
+  </title>
+
+  <!-- Meta Info -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="version" content="4.110.0">
+  <meta name="commit" content="">
+
+  <script src="//latest-enterprise.demo.design.infor.com/js/jquery-3.7.1.js"></script>
+  <script src="//latest-enterprise.demo.design.infor.com/js/d3.v7.js"></script>
+
+
+    <script src="//latest-enterprise.demo.design.infor.com/js/sohoxi.js"></script>
+
+  <!-- Supplying the culture in the head is supported
+  <script src="//latest-enterprise.demo.design.infor.com/js/sohoxi.js?v=MTIuMC4wLjAuMQ"></script>
+  <script src="../../js/cultures/en-US.js"></script>-->
+
+  <!-- Do not use this going forward due to GDPR Issues. This will be deprecated soon. -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600&amp;display=swap" rel="stylesheet">
+
+  <!-- Test and use this new style sheet in your demo app before we deprecate google apis -->
+  <!-- Uncomment these lines to test
+    <link rel="stylesheet" id="font-faces" href="//latest-enterprise.demo.design.infor.com/css/font-face.css" type="text/css" />
+  -->
+  <link rel="stylesheet" id="sohoxi-stylesheet" href="//latest-enterprise.demo.design.infor.com/css/theme-new-light.css" type="text/css">
+  <script>
+    var colors;
+    var longThemeName = 'theme-new-light';
+    var shortThemeName = 'new';
+    var blockUI = '/controls/app/views/components/tabs-module/layout.html'.indexOf('embedded') > -1 ? false : true;
+
+
+    // If Initialize isnt called need to defer this
+    var handleUrl = function(a, eventType) {
+      if (!a) {
+        return;
+      }
+
+      // Reset event type if it doesn't match up
+      var eventTypes = ['theme', 'color'];
+      if (eventType && eventTypes.indexOf(eventType) === -1) {
+        eventType === undefined;
+      }
+
+      // Setup theme if applicable
+      var queryParams = [];
+      var hasTheme = false;
+      var themeStringParts = [];
+      if ((eventType && eventType !== 'color')) {
+        hasTheme = typeof a.theme === 'string';
+        themeStringParts = a.theme.split('-');
+        queryParams.push('theme=' + themeStringParts[1]);
+        queryParams.push('mode=' + themeStringParts[2]);
+      }
+
+      // Setup color if applicable
+      var hasColor = false;
+      if (eventType && eventType !== 'theme') {
+        if (typeof a.colors === 'string') {
+          hasColor = true;
+          queryParams.push('colors=' + a.colors.replace('#', ''));
+        } else if (a.colors && typeof a.colors.header === 'string') {
+          hasColor = true;
+          queryParams.push('colors=' + a.colors.header.replace('#', ''));
+        }
+      }
+
+      function stringifyParams(theseParams) {
+        var str = '';
+        theseParams.forEach(function (param) {
+          var and = '';
+          if (queryParams[0] !== param) {
+            and = '&';
+          }
+          str += and + param;
+        });
+        return str;
+      }
+
+      // Used for filtering out existing theme-related parameters from a
+      // @param {string} queryString the URL string
+      // @returns {array} of existing Parameters in string form.
+      // Example: [`locale=ar-EG`, `useFlexToolbar=true`]
+      function existingThemeParamFilter(queryString) {
+        var existingParams = window.location.search
+          .replace('?', '')
+          .split('&');
+        existingParams = existingParams.filter(function (param) {
+          if (!param || param.length < 1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('theme=') > -1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('mode=') > -1) {
+            return false;
+          }
+          if (hasTheme && param.indexOf('variant=') > -1) {
+            return false;
+          }
+          if (hasColor && param.indexOf('colors=') > -1) {
+            return false;
+          }
+          return true;
+        });
+        return existingParams;
+      }
+
+      if (queryParams.length) {
+        // Persist existing additional params.
+        // Also, overwrite existing color/theme/mode values if they've been added above.
+        queryParams = queryParams.concat(existingThemeParamFilter(window.location.search));
+
+        // Update URL in the browser window
+        var pageUrl = '?' + stringifyParams(queryParams);
+        window.history.pushState('', '', pageUrl);
+      }
+    };
+
+    $('html')
+      .personalize({
+        colors: colors,
+        theme: longThemeName,
+        blockUI: blockUI
+      })
+      .on('colorschanged', function (e, a) {
+        handleUrl(a, 'color');
+      })
+      .on('themechanged', function (e, a) {
+        const parts = a.theme.split('-');
+        handleUrl(a, 'theme');
+
+        if (parts[1] !== shortThemeName) {
+          shortThemeName = parts[1];
+          shortThemeName = shortThemeName.replace('soho', 'classic').replace('uplift', 'new');
+          shortThemeName = shortThemeName.replace('new', 'new-default');
+          var path = window.location.pathname;
+
+          if (path.indexOf('/icons/') > -1) {
+            $('body').append('<div class="personalize-overlay" style="background: rgb(240, 240, 240); opacity: 0.933013;"></div>')
+            location.reload();
+          } else {
+            $.get('//latest-enterprise.demo.design.infor.com/api/icons?theme=' + shortThemeName, function(htmlStr) {
+              htmlStr = htmlStr.replace('</div>', '');
+              htmlStr = htmlStr.replace('<div class="svg-icons">', '');
+              $('div.svg-icons').empty().append(htmlStr);
+            },'html');
+
+            $.get('//latest-enterprise.demo.design.infor.com/api/icons-empty?theme=' + shortThemeName, function(htmlStr) {
+              htmlStr = htmlStr.replace('</div>', '');
+              htmlStr = htmlStr.replace('<div class="svg-icons-empty">', '');
+              $('div.svg-icons-empty').empty().append(htmlStr);
+            },'html');
+          }
+        }
+
+        setTimeout(() => {
+          const wcTheme = $('#ids-stylesheet');
+          if (wcTheme && wcTheme.length) {
+            const attr = wcTheme.attr('href');
+            if (parts[1] === 'new') {
+              wcTheme.attr('href', attr.replace('-light', `-${parts[2]}`).replace('-dark', `-${parts[2]}`).replace('-contrast', `-${parts[2]}`))
+            }
+          }
+        }, 100);
+      });
+  </script>
+
+  <link rel="stylesheet" href="//latest-enterprise.demo.design.infor.com/css/demo.css" type="text/css">
+<script src="https://latest-enterprise.demo.design.infor.com/js/cultures/en-US.js"></script></head>
+<body><header class="header is-personalizable">
+  <div class="flex-toolbar">
+    <div class="toolbar-section title">
+      <h1>IDS Enterprise</h1>
+    </div>
+
+    <!-- included in all "header-*.html" templates -->
+    <div class="more">
+      <button id="header-more-actions" class="btn-actions page-changer personalize-actionable has-tooltip no-ripple hide-focus" type="button" aria-label="Header More Actions Button" tabindex="0" aria-haspopup="true">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use href="#icon-more"></use>
+        </svg>
+        <span class="audible" data-translate="text" data-translate-key="More">More</span>
+      </button>
+      
+    </div>
+  </div>
+</header>
+
+<div class="row top-padding">
+  <div class="twelve column">
+    <!-- Module Tabs -->
+    <section id="module-tabs-example" class="tab-container module-tabs is-personalizable has-more-button scrolled-left" data-options="{ containerElement: '#module-tabs-container', 'changeTabOnHashChange': true, 'maxWidth': 200, 'moduleTabsTooltips': true }">
+      <div class="tab-list-container">
+        <ul class="tab-list" role="tablist">
+          <li class="tab dismissible verified is-selected" role="presentation" style="width: 200px;">
+            <a id="tab-order-1" data-automation-id="tab-order-1" href="#order-1" role="tab" aria-selected="true" tabindex="0" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 1</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-2" data-automation-id="tab-order-2" href="#order-2" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 2</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-3" data-automation-id="tab-order-3" href="#order-3" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 3</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-4" data-automation-id="tab-order-3" href="#order-4" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 4</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-5" data-automation-id="tab-order-3" href="#order-5" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 5</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-6" data-automation-id="tab-order-3" href="#order-6" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 6</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-7" data-automation-id="tab-order-3" href="#order-7" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 7</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+          <li class="tab dismissible verified" role="presentation" style="width: 200px;">
+            <a id="tab-order-8" data-automation-id="tab-order-3" href="#order-8" role="tab" aria-selected="false" tabindex="-1" class="has-tooltip" style="">CRS852 SMS Data. Create from Sales Statistics. Tab 8</a><svg class="icon close" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-close"></use></svg>
+          </li>
+        </ul><div class="tab-more" role="button" tabindex="-1" aria-label="3 More"><span class="more-text" aria-hidden="true"><span class="count">3 </span>More</span><svg class="icon-more icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg></div>
+      </div>
+    </section>
+
+    <div id="module-tabs-container" class="no-scroll tab-panel-container">
+
+      <!-- Tab Panels -->
+      <div id="order-1" class="tab-panel no-scroll can-show is-visible" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>1 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-2" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>2 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-3" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>3 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-4" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>4 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-5" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>5 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-6" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>6 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-7" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>7 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="order-8" class="tab-panel no-scroll" role="tabpanel">
+        <div class="row">
+          <div class="twelve columns">
+            <p>8 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.'</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+
+
+  <script>
+
+    function wrapInPageMarkup(name, content) {
+      return '<header class="header is-personalizable">' +
+        '<div class="toolbar">' +
+          '<div class="title">' +
+            '<h1>' + name + '</h1>' +
+          '</div>' +
+          '<div class="buttonset"></div>' +
+        '</div>' +
+      '</header>' +
+      '<div class="page-container scrollable"><div class="row"><div class="twelve columns">' + content + '</div></div></div>';
+    }
+
+    $('body').on('initialized', function() {
+      var tabsAPI = $('#module-tabs-example').data('tabs');
+
+      function toggleFields(fillAutomatically) {
+        if (fillAutomatically) {
+          $('#create-tab-name, #create-tab-content').disable();
+          return;
+        }
+
+        $('#create-tab-name, #create-tab-content').enable();
+        return;
+      }
+
+      function buildRandomParagraphs(numberOfParagraphs) {
+        if (!buildRandomParagraphs || typeof numberOfParagraphs !== 'number') {
+          buildRandomParagraphs = 1;
+        }
+
+        var ret = '';
+        for (var i = 0; i < buildRandomParagraphs; i++) {
+          ret += '<p>' + $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120') + '</p>';
+        }
+        return ret;
+      }
+
+      function paragraph(text) {
+        return '<p>' + text + '</p>';
+      }
+
+      $('#use-garbage').on('change.test', function() {
+        var checked = $(this).prop('checked');
+        toggleFields(checked);
+      });
+
+      $('#add-tab').on('submit.test', function(e) {
+        e.preventDefault();
+
+        function completeTab(name, content) {
+          // Wrap the content in a page-wrapper and header
+          content = wrapInPageMarkup(name, content);
+
+          var id = Soho.utils.uniqueId($('a'), 'tab');
+          tabsAPI.add(id, {
+            name: name,
+            content: content,
+            isDismissible: true
+          });
+        }
+
+        // Get a baseline for tab content.
+        var name = '' + $('#create-tab-name').val(),
+          content = '' + $('#create-tab-content').val();
+
+        // Do different things depending on the checkbox
+        if ($('#use-garbage').prop('checked')) {
+          var title = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=1'),
+            body1 = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120'),
+            body2 = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120'),
+            body3 = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120'),
+            body4 = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120'),
+            body5 = $.get('//latest-enterprise.demo.design.infor.com/api/garbage?size=120');
+
+          $.when(title, body1, body2, body3, body4, body5).done(function completed(title, body1, body2, body3, body4, body5) {
+
+            // Unwrap quotes from response
+            function unwrap(content) {
+              return content = content.substring(1, (content.length - 1));
+            }
+
+            name = '' + unwrap(title[0]);
+            content += '<h3>'+ name +'</h3>' +
+              paragraph(unwrap(body1[0])) +
+              paragraph(unwrap(body2[0])) +
+              paragraph(unwrap(body3[0])) +
+              paragraph(unwrap(body4[0])) +
+              paragraph(unwrap(body5[0]));
+
+            completeTab(name, content);
+          })
+
+        } else {
+          completeTab(name, content);
+        }
+      });
+
+      // Run the field toggle method on start
+      toggleFields($('#use-garbage').prop('checked'));
+    });
+  </script>
+
+
+
+<script>
+  // Initialize all IDS Enterprise Controls and set the locale
+  var initialLocale = 'en-US';
+  initialLocale = 'en-US';
+
+  $('body').initialize({locale: initialLocale});
+</script>
+
+
+<div id="ids-modal-root" class="modal-page-container" aria-hidden="true"><div class="overlay" aria-hidden="true"></div></div><div class="tooltip bottom is-hidden placeable" id="tooltip"><div class="arrow"></div><div class="tooltip-content"></div></div><div class="popupmenu-wrapper bottom"><ul class="popupmenu is-selectable has-submenu" id="popupmenu-1" role="menu" aria-labelledby="header-more-actions">
+        <li role="none" class="submenu">
+          <a href="#" role="menuitem" tabindex="-1" aria-haspopup="true"><span>Versions</span><svg class="arrow icon-dropdown icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg></a>
+          <div class="wrapper"><ul class="popupmenu">
+            <li class="is-selectable is-checked" role="none"><a href="#" data-theme-name="theme-new" data-translate="text" data-translate-key="New" role="menuitemcheckbox" tabindex="-1" aria-checked="true">New</a></li>
+            <li class="is-selectable" role="none"><a href="#" data-theme-name="theme-classic" data-translate="text" data-translate-key="Classic" role="menuitem" tabindex="-1" aria-checked="true">Classic</a></li>
+          </ul></div>
+        </li>
+        <li role="none" class="submenu">
+          <a href="#" role="menuitem" tabindex="-1" aria-haspopup="true"><span>Modes</span><svg class="arrow icon-dropdown icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg></a>
+          <div class="wrapper"><ul class="popupmenu">
+            <li class="is-selectable is-checked" role="none"><a href="#" data-theme-mode="light" data-translate="text" data-translate-key="Light" role="menuitemcheckbox" tabindex="-1" aria-checked="true">Light</a></li>
+            <li class="is-selectable" role="none"><a href="#" data-theme-mode="dark" data-translate="text" data-translate-key="Dark" role="menuitem" tabindex="-1">Dark</a></li>
+            <li class="is-selectable" role="none"><a href="#" data-theme-mode="contrast" data-translate="text" data-translate-key="HighContrast" role="menuitem" tabindex="-1">High contrast</a></li>
+          </ul></div>
+        </li>
+        <li role="none" class="submenu">
+          <a href="#" role="menuitem" tabindex="-1" aria-haspopup="true"><span>Colors</span><svg class="arrow icon-dropdown icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg></a>
+          <div class="wrapper"><ul class="popupmenu">
+            <li class="is-selectable is-checked is-default" role="none"><a href="#" data-rgbcolor="#fff" role="menuitemcheckbox" tabindex="-1" aria-checked="true">Default</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#BB5500" role="menuitem" tabindex="-1">Amber</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#7928E1" role="menuitem" tabindex="-1">Amethyst</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#0066D4" role="menuitem" tabindex="-1">Azure</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#1F9254" role="menuitem" tabindex="-1">Emerald</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#535353" role="menuitem" tabindex="-1">Graphite</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#8D0B0E" role="menuitem" tabindex="-1">Ruby</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#6F6F76" role="menuitem" tabindex="-1">Slate</a></li><li class="is-selectable" role="none"><a href="#" data-rgbcolor="#297B7B" role="menuitem" tabindex="-1">Turquoise</a></li>
+          </ul></div>
+        </li>
+      </ul><div class="arrow"></div></div></body></html>

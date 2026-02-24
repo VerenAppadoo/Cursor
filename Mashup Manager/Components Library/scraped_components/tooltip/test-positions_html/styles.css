@@ -1,0 +1,27 @@
+
+      .top-left,
+      .top-right,
+      .bot-left,
+      .bot-right {
+        position: absolute;
+      }
+
+      .top-right,
+      .bot-right {
+        right: 0;
+        text-align: right;
+      }
+
+      .bot-left,
+      .bot-right {
+        bottom: 0;
+      }
+
+      html[dir='rtl'] .top-right,
+      html[dir='rtl'] .bot-right {
+        left: 0;
+        right: auto;
+        text-align: left;
+      }
+
+      

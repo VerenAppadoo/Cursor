@@ -1,0 +1,22 @@
+
+        .sparkline {
+          width: 285px;
+        }
+        .test-sparkline-wrap {
+          margin-top: 40px;
+        }
+        .test-sparkline-wrap hr {
+          display: block;
+          float: left;
+          height: 1px;
+          border: 0;
+          border-top: 1px solid #ccc;
+          padding: 0;
+          width: 255px;
+        }
+
+        /* RTL Styles */
+        html[dir='rtl'] .test-sparkline-wrap hr {
+          float: right;
+        }
+      

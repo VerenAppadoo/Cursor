@@ -1,0 +1,31 @@
+
+        .tooltip-extra-class {
+          background-color: #488421;
+          /* Emerald09 */
+          border: 1px solid #488421;
+        }
+
+        .tooltip-extra-class.top .arrow::after {
+          border-top-color: #488421;
+          /* Emerald09 */
+        }
+
+        .tooltip-extra-class.bottom .arrow::after {
+          border-bottom-color: #488421;
+          /* Emerald09 */
+        }
+
+        .tooltip-extra-class.right .arrow::after {
+          border-right-color: #488421;
+          /* Emerald09 */
+        }
+
+        .tooltip-extra-class.left .arrow::after {
+          border-left-color: #488421;
+          /* Emerald09 */
+        }
+
+        .TEST-big p {
+          font-size: 21px;
+        }
+      

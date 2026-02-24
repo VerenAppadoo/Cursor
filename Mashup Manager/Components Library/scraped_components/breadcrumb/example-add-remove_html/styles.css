@@ -1,0 +1,11 @@
+
+        #results-card {
+          padding: 20px;
+        }
+
+        #results-card .prop {
+          display: inline-block;
+          font-weight: 700;
+          min-width: 150px;
+        }
+      

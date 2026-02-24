@@ -1,0 +1,11 @@
+
+        .widget {
+          height: auto;
+        }
+
+        .widget-content {
+          height: fit-content !important;
+          min-height: 500px !important;
+          overflow: hidden;
+        }
+      

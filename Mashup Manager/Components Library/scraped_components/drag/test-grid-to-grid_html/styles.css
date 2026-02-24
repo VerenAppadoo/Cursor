@@ -1,0 +1,9 @@
+
+        .drag-grid-row {
+          position: fixed;
+        }
+        #source .datagrid tbody tr td.drag-grid-is-over {
+          background-color: #c8e9f4;
+          border: 1px dashed #2578a9;
+        }
+      

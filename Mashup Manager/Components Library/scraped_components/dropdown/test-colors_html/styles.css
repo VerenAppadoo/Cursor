@@ -1,0 +1,10 @@
+
+      .dropdown {
+        background-color: #126171 !important;
+        color: white !important;
+      }
+
+      .dropdown + .icon {
+        fill: white !important;
+      }
+      

@@ -1,0 +1,22 @@
+
+        .drag-container {
+          height: 120px;
+        }
+
+        .drag-box {
+          background: #fff;
+          border: 1px solid #bdbdbd;
+          height: 50px;
+          position: absolute;
+          width: 50px;
+          color: #000;
+        }
+
+        .left-340 {
+          left: 340px;
+        }
+
+        .left-395 {
+          left: 395px;
+        }
+      

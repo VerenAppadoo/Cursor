@@ -1,0 +1,148 @@
+---
+description: Standard prompt templates and workflows for asking Cursor to generate a new mashup or a mashup component. Use these as your starting prompts.
+alwaysApply: false
+author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+---
+
+# Mashup Generation — Prompt Templates
+
+These are ready-to-use prompts you can paste into Cursor Chat to generate a mashup.
+Copy, fill in the `< >` placeholders, and send.
+
+---
+
+## PROMPT 1 — Create a Brand-New Mashup Project
+
+```
+Create a new Odin mashup project called <project-name>.
+
+Steps:
+1. In the terminal, navigate to the Projects folder:
+   cd "Mashup Manager/Projects"
+2. Run `odin new`.
+3. When asked for the project name, enter: <project-name>
+4. When asked to select a library, choose: soho
+5. After generation, cd into the project and run `npm install`.
+
+The mashup should:
+- <Describe the main purpose — e.g. "display a list of customers with filtering and the ability to open a detail form">
+- Use the following IDS components:
+    - <List components, e.g. soho-datagrid for the main list>
+    - <e.g. soho-modal-dialog for the detail form>
+    - <e.g. soho-toolbar-flex for the page header>
+- Data comes from: <describe the data source — e.g. "a mock array of customer objects" or "a REST endpoint at /api/customers">
+
+Before writing any component, read:
+  - Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/*.component.d.ts
+  - Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html
+
+Follow all rules in .cursor/rules/.
+```
+
+---
+
+## PROMPT 2 — Add a Single IDS Component to an Existing Mashup
+
+```
+Add a <component-name> component to the mashup at <path-to-component-folder>.
+
+Requirements:
+- <Describe what this component should do — e.g. "show a paginated, sortable data grid of orders">
+- Inputs: <list the data properties the component will receive as @Input>
+- Outputs: <list the events the component should emit as @Output>
+
+Before generating the code:
+1. Read: Mashup Manager/Components Library/ids-enterprise-ng/lib/<ids-component>/soho-<ids-component>.component.d.ts
+2. Read: Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html
+
+Use only documented @Input/@Output names from the .d.ts file.
+Follow all coding rules in .cursor/rules/mashup-coding-rules.mdc.
+```
+
+---
+
+## PROMPT 3 — Generate a Full Feature Page (List + Detail)
+
+```
+Generate a full feature page for <feature-name> in the existing mashup at <project-path>.
+
+The page should have:
+1. A toolbar (soho-toolbar-flex) with:
+   - A page title: "<Page Title>"
+   - An "Add New" primary button
+   - A search field
+
+2. A data grid (soho-datagrid) that:
+   - Shows columns: <list column names and field paths>
+   - Supports single-row selection
+   - Emits (rowActivated) to open the detail panel
+
+3. A modal dialog (soho-modal-dialog) that:
+   - Opens when a row is activated or "Add New" is clicked
+   - Contains a form with: <list form fields and their IDS component types>
+   - Has Save and Cancel buttons
+
+Data model (TypeScript interface):
+<paste or describe the model, e.g.:
+interface Order {
+  id: number;
+  customerName: string;
+  status: 'open' | 'closed' | 'pending';
+  orderDate: Date;
+}
+>
+
+Data source: <mock array / HTTP service at /api/<endpoint>>
+
+Rules:
+- Consult the component library for every IDS component used.
+- Follow .cursor/rules/mashup-coding-rules.mdc for all TypeScript and Angular conventions.
+- Follow .cursor/rules/odin-framework.mdc for project-specific conventions.
+```
+
+---
+
+## PROMPT 4 — Generate a Dashboard / Homepage
+
+```
+Generate a dashboard homepage for the mashup at <project-path>.
+
+Layout:
+- Use soho-homepage as the container.
+- Include the following widgets:
+  - <e.g. A KPI card (soho-card) showing total orders>
+  - <e.g. A bar chart (soho-bar) showing orders by month>
+  - <e.g. A listview (soho-listview) showing recent activity>
+
+For each widget:
+1. Read the corresponding .d.ts in Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/
+2. Read the example HTML in Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html
+
+Use mock/static data for now unless otherwise specified.
+Follow all rules in .cursor/rules/.
+```
+
+---
+
+## PROMPT 5 — Fix / Debug an IDS Component Issue
+
+```
+The <component-name> at <file-path> is not working correctly. The issue is:
+<describe the problem, e.g. "the datagrid is not showing data" or "the dropdown is not populating">
+
+Please:
+1. Re-read Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/soho-<component>.component.d.ts
+2. Compare the current implementation against the documented @Input/@Output names.
+3. Check if IDS API calls are being made before ngAfterViewInit.
+4. Provide the corrected implementation with an explanation of what was wrong.
+```
+
+---
+
+## Tips for Better Prompts
+
+- **Be specific about data shapes** — paste your TypeScript interface directly into the prompt.
+- **Name the exact IDS components** you want — Cursor will look them up in the library.
+- **Mention the file paths** of existing files when modifying — helps Cursor find context.
+- **One feature per prompt** — break large mashups into multiple targeted prompts.
+- **Reference examples** — you can say "use the grouping example from `scraped_components/datagrid/example-grouping_html/page.html`".

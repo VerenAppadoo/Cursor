@@ -1,0 +1,8 @@
+
+        .datagrid-cell-wrapper {
+          input[type="number"] {
+            height:2.7rem;
+            width: 85%;
+          }
+        }
+      

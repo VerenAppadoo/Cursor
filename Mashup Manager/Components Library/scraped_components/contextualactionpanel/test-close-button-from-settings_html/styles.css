@@ -1,0 +1,8 @@
+
+        /* Mimic the "phone-to-tablet" breakpoint */
+        @media (min-width: 767px) {
+          .contextual-action-panel {
+            min-width: 600px;
+          }
+        }
+      

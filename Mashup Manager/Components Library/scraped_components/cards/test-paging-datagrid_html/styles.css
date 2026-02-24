@@ -1,0 +1,9 @@
+
+        .card .datagrid-container.small-rowheight.paginated {
+          height: calc(100% - 38px);
+        }
+
+        .card-footer {
+          padding: 0px 20px;
+        }
+      

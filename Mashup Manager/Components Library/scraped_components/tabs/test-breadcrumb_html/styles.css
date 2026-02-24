@@ -1,0 +1,17 @@
+
+        .blockgrid .block.configblock .hyperlink-even {
+          background: #368ac0;
+          outline: none;
+        }
+        .blockgrid .block.configblock .hyperlink {
+          width: 200px;
+          height: 200px;
+          display: table-cell;
+          vertical-align: middle;
+          text-align: center;
+          cursor: pointer;
+          font-size: 2.2rem;
+          text-decoration: none;
+          color: #fff;
+        }
+      
