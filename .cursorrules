@@ -1,79 +1,203 @@
 # Mashup Manager — Cursor AI Rules
-# Author: Veren Appadoo <veren.appadoo@spoonconsulting.com> — Spoon Consulting
+# Author: Tushaar Mungul <tushaar.mungul@spoonconsulting.com> — Spoon Consulting
 
-You are an expert Mashup developer working with the Odin framework (custom Angular 18)
-and the IDS Enterprise NG component library (ids-enterprise-ng@18.2.4).
+# H5 SDK Mashup — Cursor Rules
+# Place this file at the ROOT of your Angular H5 SDK project
 
----
-
-## CRITICAL WORKFLOW — Always follow this order
-
-When asked to generate any mashup code:
-
-1. **Identify the IDS components needed** from the user's request.
-2. **Consult the Components Library** before writing any component code:
-   - Read `Mashup Manager/Components Library/ids-enterprise-ng/lib/<component>/soho-<component>.component.d.ts`
-     to find the exact @Input and @Output names and types.
-   - Read `Mashup Manager/Components Library/scraped_components/<slug>/example-index_html/page.html`
-     for the canonical HTML usage pattern.
-3. **Generate code that uses only documented API properties** — never guess or invent @Input names.
+## 1. PROJECT STRUCTURE
+- All M3 API calls must be defined in a SHARED SERVICE (e.g. api.service.ts)
+- Never write API calls directly inside a component
+- Components call the shared service methods only
+- Keep business logic in services, keep components clean for UI only
 
 ---
 
-## Framework: Odin (NOT plain Angular)
-
-- `odin new` — create a new project (NOT `ng new`)
-- `odin serve` — dev server (NOT `ng serve`)
-- `odin build` — build (NOT `ng build`)
-- `odin generate` or `odin g` — scaffolding (NOT `ng generate`)
-- **All projects MUST be created inside `Mashup Manager/Projects/`.**
-  Always `cd "Mashup Manager/Projects"` before running `odin new`.
-- When creating a new project: run `odin new`, enter project name, select **soho** as the library.
-- In `AppModule`, import `SohoComponentsModule` from `'ids-enterprise-ng'`.
-
----
-
-## IDS Enterprise NG
-
-- Package: `ids-enterprise-ng@18.2.4`
-- Angular version: 18
-- Underlying jQuery library: `ids-enterprise@4.98.3`
-- All IDS Angular component selectors start with `soho-` (e.g. `soho-datagrid`, `soho-dropdown`).
-- IDS components must not be accessed before `ngAfterViewInit`.
-- Use `@ViewChild(SohoXxxComponent) xxxRef!: SohoXxxComponent;` for programmatic access.
+## 2. USER CONTEXT INITIALIZATION
+- UserContext must be initialized BEFORE the app starts loading
+- Do NOT initialize UserContext in ngOnInit
+- Use APP_INITIALIZER in app.module.ts to load UserContext at bootstrap
+- Refer to SampleH5SDK projects to understand the correct UserContext initialization pattern
+- Example pattern:
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (userContextService) => () => userContextService.init(),
+      deps: [UserContextService],
+      multi: true
+    }
+  ]
 
 ---
 
-## TypeScript Rules
+## 3. app.component.html STRUCTURE
+Every app.component.html MUST start with exactly these 2 lines first:
 
-- No `any` types — always use proper interfaces.
-- `ChangeDetectionStrategy.OnPush` on all components.
-- Unsubscribe all Observables with `takeUntil(this.destroy$)`.
-- Type all IDS event handler parameters from the component `.d.ts`.
-- Data fetching belongs in Services, not in components.
+<soho-icons-new></soho-icons-new>
+<soho-icons-empty-new></soho-icons-empty-new>
+
+Then immediately after, add the masthead section:
+
+<section class="masthead">
+  <div class="flex-toolbar" data-options="{maxVisibleButtons: 6}">
+    <div class="toolbar-section">
+      <button type="button" class="masthead-icon">
+        <svg class="icon icon-logo" focusable="false" aria-hidden="true" role="presentation">
+          <use href="#icon-logo"></use>
+        </svg>
+        <span class="audible">Go To Home</span>
+      </button>
+    </div>
+    <div class="toolbar-section title">
+      <h1 class="masthead-appname">{{appTitle}}</h1>
+    </div>
+    <div class="toolbar-section buttonset">
+      <button type="button" class="btn" id="versionbtn"
+        (click)="headerPanelVersion()">{{appVersion.version}}</button>
+    </div>
+  </div>
+</section>
+
+Refer to SampleH5SDK\C04-Cuisson-Pomme\src\app\app.component.html for the full reference structure.
 
 ---
 
-## Component Library Paths
+## 4. API CALL PATTERN
+All M3 API calls MUST follow this exact structure inside the shared API service:
 
-- TypeScript definitions: `Mashup Manager/Components Library/ids-enterprise-ng/lib/`
-- HTML examples: `Mashup Manager/Components Library/scraped_components/`
-- Master component index: `Mashup Manager/Components Library/scraped_components/_index.json`
-- Detailed rules: `.cursor/rules/component-library.mdc`
-- Full coding standards: `.cursor/rules/mashup-coding-rules.mdc`
-- Odin framework guide: `.cursor/rules/odin-framework.mdc`
-- Prompt templates: `.cursor/rules/mashup-prompt-templates.mdc`
-- **Project examples guide**: `.cursor/rules/project-examples.mdc`
+async call_[ProgramName]_[TransactionName](param1: string, param2: string): Promise<any> {
+  try {
+    const inputRecord = new MIRecord();
+    inputRecord.setString('FIELD1', param1?.trim());
+    inputRecord.setString('FIELD2', param2?.trim());
 
-## Projects Examples — Real Code Reference
+    const request: IMIRequest = {
+      program: 'PROGRAMNAME',
+      transaction: 'TRANSACTIONNAME',
+      record: inputRecord,
+      maxReturnedRecords: 0,
+      outputFields: []
+    };
 
-`Mashup Manager/Projects Examples/` contains real production Odin mashup projects.
-Before generating ANY service, component, store, M3 API call, route, or utility:
-→ Read the matching pattern from the closest project in `Projects Examples/`.
-→ Key patterns to follow:
-  - **Standalone components** with individual Soho module imports (NOT `SohoComponentsModule`)
-  - **M3 API calls**: `firstValueFrom(this.miService.execute(request))` with `IMIRequest` from `@infor-up/m3-odin`
-  - **Store pattern**: `Store<T>` BehaviorSubject-based class in `core/models/store.ts`
-  - **GDIS services**: import from `@gdis/api` (MessageService, UserService, ThemeService, etc.)
-  - **Path aliases**: `@core/`, `@shared/`, `@gdis/`, `@environments/`
+    const response: IMIResponse = await this.miService.execute(request).toPromise();
+
+    if (response.hasError()) {
+      return [{ error: true, errorMessage: response.errorMessage }];
+    }
+
+    return response.items.length > 0 ? response.items : response.items;
+  } catch (error: any) {
+    console.error("Error:", error);
+    return [{ error: true, errorMessage: error.message || error }];
+  }
+}
+
+Rules for API calls:
+- Method naming: call_[ProgramName]_[TransactionName]
+- Always use ?.trim() on all string inputs
+- Always check response.hasError() before returning
+- Always wrap in try/catch
+- maxReturnedRecords: 0 means no limit — use by default
+- outputFields: [] means return all fields — use by default unless specific fields needed
+- For standard M3 APIs: always verify program, transaction, inputs and mandatory fields
+  against CursorInstructions\API_List\API.json
+- For custom APIs (CMS100MI, MDBREADMI, EXT...MI): full input/output description MUST
+  be provided in requirement.md — never guess custom API fields
+
+---
+
+## 5. ASSETS FILES — REQUIRED IN EVERY PROJECT
+
+Two files MUST always exist under src/assets/:
+
+### 5.1 src/assets/api.json
+- Stores ALL M3 API calls used in this project
+- Must be kept in ASCENDING ORDER by program name, then transaction name
+- Every time a new API call is added to the shared service, update this file
+- Refer to SampleH5SDK\C04-Cuisson-Pomme\src\assets\api.json for the exact format
+- Example structure:
+  [
+    {
+      "program": "CMS100MI",
+      "transaction": "LstC04_CUISSOND",
+      "description": "List cuisson data",
+      "inputs": ["F_RDAT", "T_RDAT", "F_WMST", "T_WMST", "VMFACI"],
+      "outputs": []
+    },
+    {
+      "program": "MMS200MI",
+      "transaction": "GetItmWhsBas",
+      "description": "Get item warehouse basic data",
+      "inputs": ["WHLO", "ITNO"],
+      "outputs": ["WHLO", "ITNO", "STQT", "ALQT"]
+    }
+  ]
+- Always maintain alphabetical/ascending order: programs A→Z, then transactions A→Z within
+  the same program
+- Never leave this file empty or outdated — it must reflect exactly what is used in the project
+
+### 5.2 src/assets/parametre.json
+- Stores the version of the project and any global parameters
+- Refer to SampleH5SDK\C04-Cuisson-Pomme\src\assets\parametre.json for the exact format
+- Must be updated every time a new version is released
+- Example structure:
+  {
+    "version": "1.0.0",
+    "appName": "MAH33 Cuisson Pommes",
+    "environment": "production"
+  }
+- The version value is what gets displayed in the masthead via {{appVersion.version}}
+- app.component.ts must load this file at startup and expose it as appVersion
+
+---
+
+## 6. TRAINING RESOURCES — ALWAYS CONSULT BEFORE IMPLEMENTING
+
+### 6.1 M3 API List
+- Location: CursorInstructions\API_List\API.json
+- Use this to verify: program name, transaction name, input fields, output fields, mandatory fields
+- Never assume or guess an API field — always check api.json first
+- Custom APIs are NOT in api.json — get their definition from requirement.md
+
+### 6.2 Sample H5 SDK Projects
+- Location: SampleH5SDK\ folder in the project root
+- Always refer to these for: project structure, module setup, UserContext init,
+  service patterns, component patterns
+- These are validated projects — inherit their patterns faithfully
+- Key reference: SampleH5SDK\C04-Cuisson-Pomme\src\app\app.component.html
+- Key reference: SampleH5SDK\C04-Cuisson-Pomme\src\assets\ for api.json and parametre.json format
+
+### 6.3 Infor Standard Components Library
+- Location: Mashup Manager\Components Library\scraped_components\
+- Always use scraped component code as the base for any Soho IDS component
+- To find the right component:
+  1. Go to the component subfolder (e.g. scraped_components\button\)
+  2. Pick the correct .html variant for your use case
+     (e.g. example-disabled-button-tooltip_html)
+  3. Extract ONLY the code below the <span>IDS Enterprise</span> tag
+  4. That is the implementation-ready component code
+
+---
+
+## 7. GENERAL CODING RULES
+- Always use TypeScript strict typing
+- Never use 'any' unless absolutely necessary and justified
+- Always use async/await — never raw .subscribe() for API calls
+- Always handle errors gracefully — never let API errors crash the UI
+- Always use Soho IDS components:
+  soho-grid, soho-button, soho-input, soho-dropdown,
+  soho-datepicker, soho-lookup, soho-accordion, etc.
+- Never use plain HTML <input>, <button>, <select> —
+  always use their Soho IDS equivalents
+- Follow Angular best practices: OnPush change detection where possible,
+  unsubscribe on destroy
+
+---
+
+## 8. REQUIREMENT FILE
+- Before implementing any feature, always check requirement.md at the project root
+- requirement.md contains:
+  - Feature description and business logic
+  - Custom API definitions with full input/output fields
+  - Any specific rules or constraints for this project
+- If requirement.md does not exist, ask the user to provide it before proceeding
   - **Translation**: `TranslocoDirective` + `@jsverse/transloco`
