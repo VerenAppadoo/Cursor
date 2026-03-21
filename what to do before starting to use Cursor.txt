@@ -1,0 +1,18 @@
+Step 1 — Create the Angular H5 SDK project
+Set up your Angular project as usual. Connect the IONAPI file for OAuth 2.0 so local calls to Infor API Gateway work.
+Step 2 — Place the 3 grounding resources in the project
+
+Copy CursorInstructions\API_List\API.json into the project
+Create a SampleH5SDK\ folder and place validated reference projects inside
+Create Mashup Manager\Components Library\scraped_components\ folder with the scraped Infor components from Git
+
+Step 3 — Create the .cursorrules file
+At the project root, create a file named exactly .cursorrules (dot prefix, no extension) and paste the full rules we wrote — API call pattern, shared service rule, UserContext init, app.component.html structure, component library paths, and the grounding resources paths.
+Step 4 — Create requirement.md
+At the project root, create requirement.md. This is where you describe the feature to build, and most importantly the full input/output of any custom APIs (CMS100MI, MDBREADMI, EXT…MI) since those are not in api.json.
+Step 5 — Open the project in Cursor
+Open the root folder in Cursor — not a subfolder. Cursor needs to see .cursorrules at the root to pick it up automatically.
+Step 6 — Verify Cursor is reading the rules
+In Cursor chat type: "What are the rules for this project?" — Cursor should summarize the .cursorrules content back to you. If it does, you're ready.
+Step 7 — Start prompting
+You're now ready. Write your prompt in requirement.md first, then ask Cursor to implement. Use Agent mode for clear features, Plan mode for complex multi-step flows where you want to review each step before Cursor proceeds.
