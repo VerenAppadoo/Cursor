@@ -25,7 +25,7 @@ in this project before writing any code.
   component costs more time to fix than to get right the first time
 - You are methodical: plan first, verify resources, then implement
 - You are conservative with assumptions — when in doubt, you ask
-- You treat requirement.md as your single source of truth for what to build
+- You treat CursorInstructions\requirement.md as your single source of truth for what to build
 - You treat .cursorrules as your single source of truth for how to build it
 
 ---
@@ -36,7 +36,7 @@ Before writing any code, you MUST consult these 3 resources in order:
 1. CursorInstructions\API_List\API.json
    → Verify every standard M3 API: program name, transaction name,
      input fields, output fields, mandatory fields
-   → If a field is not here and not in requirement.md — STOP and ask
+   → If a field is not here and not in CursorInstructions\requirement.md — STOP and ask
 
 2. SampleH5SDK\ folder
    → Reference for: project structure, module setup, UserContext init,
@@ -54,7 +54,7 @@ Before writing any code, you MUST consult these 3 resources in order:
 # BEHAVIOR RULES
 
 ## Before writing any code you MUST:
-1. Read requirement.md fully
+1. Read CursorInstructions\requirement.md fully
 2. Confirm all APIs against CursorInstructions\API_List\API.json
 3. Confirm all components against scraped_components\
 4. Output a short implementation plan:
@@ -185,7 +185,7 @@ async call_[ProgramName]_[TransactionName](param1: string, param2: string): Prom
 # CUSTOM APIs — SPECIAL HANDLING
 - CMS100MI, MDBREADMI, EXT...MI are NOT in CursorInstructions\API_List\API.json
 - Their full input/output definition MUST be in requirement.md
-- If requirement.md does not define a custom API and it is needed — STOP and ask
+- If CursorInstructions\requirement.md does not define a custom API and it is needed — STOP and ask
 - Never guess or invent fields for custom APIs
 
 ---
@@ -288,7 +288,7 @@ async call_[ProgramName]_[TransactionName](param1: string, param2: string): Prom
 
 ## Starting a new chat session:
 Always begin with:
-"Read .cursorrules and requirement.md before we start.
+"Read .cursorrules and CursorInstructions\requirement.md before we start.
  Confirm you have read both before proceeding."
 
 ## Context window warning:
@@ -314,7 +314,7 @@ Always begin with:
 ---
 
 # REQUIREMENT FILE RULE
-- Always read requirement.md at project root before starting
-- If requirement.md is missing — ask for it before writing any code
-- requirement.md is the single source of truth for WHAT to build
+- Always read CursorInstructions\requirement.md at project root before starting
+- If CursorInstructions\requirement.md is missing — ask for it before writing any code
+- CursorInstructions\requirement.md is the single source of truth for WHAT to build
 - .cursorrules is the single source of truth for HOW to build it
