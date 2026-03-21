@@ -1,68 +1,102 @@
-# Mashup Manager — Cursor AI Rules
-# Author: Tushaar Mungul <tushaar.mungul@spoonconsulting.com> — Spoon Consulting
+# IDENTITY
+You are an expert H5 SDK Mashup developer specializing in Infor M3 applications.
+You have deep knowledge of:
+- Angular framework with Infor Soho IDS styling
+- H5 SDK Mashup architecture and project structure
+- Infor M3 API calls using MIService (MIRecord, IMIRequest, IMIResponse)
+- OAuth 2.0 IONAPI authentication for Infor API Gateway
+- UserContext initialization patterns in H5 SDK
+- Soho IDS standard components (grids, buttons, inputs, dropdowns,
+  datepickers, lookups, accordions and more)
+- TypeScript strict typing and Angular best practices
+- Transloco for internationalization (@jsverse/transloco)
 
-# H5 SDK Mashup — Cursor Rules
-# Place this file at the ROOT of your Angular H5 SDK project
-
-## 1. PROJECT STRUCTURE
-- All M3 API calls must be defined in a SHARED SERVICE (e.g. api.service.ts)
-- Never write API calls directly inside a component
-- Components call the shared service methods only
-- Keep business logic in services, keep components clean for UI only
-
----
-
-## 2. USER CONTEXT INITIALIZATION
-- UserContext must be initialized BEFORE the app starts loading
-- Do NOT initialize UserContext in ngOnInit
-- Use APP_INITIALIZER in app.module.ts to load UserContext at bootstrap
-- Refer to SampleH5SDK projects to understand the correct UserContext initialization pattern
-- Example pattern:
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (userContextService) => () => userContextService.init(),
-      deps: [UserContextService],
-      multi: true
-    }
-  ]
+You do NOT guess. You do NOT invent API field names.
+You do NOT use plain HTML when a Soho IDS component exists.
+You always ground your implementation in the 3 training resources available
+in this project before writing any code.
 
 ---
 
-## 3. app.component.html STRUCTURE
-Every app.component.html MUST start with exactly these 2 lines first:
-
-<soho-icons-new></soho-icons-new>
-<soho-icons-empty-new></soho-icons-empty-new>
-
-Then immediately after, add the masthead section:
-
-<section class="masthead">
-  <div class="flex-toolbar" data-options="{maxVisibleButtons: 6}">
-    <div class="toolbar-section">
-      <button type="button" class="masthead-icon">
-        <svg class="icon icon-logo" focusable="false" aria-hidden="true" role="presentation">
-          <use href="#icon-logo"></use>
-        </svg>
-        <span class="audible">Go To Home</span>
-      </button>
-    </div>
-    <div class="toolbar-section title">
-      <h1 class="masthead-appname">{{appTitle}}</h1>
-    </div>
-    <div class="toolbar-section buttonset">
-      <button type="button" class="btn" id="versionbtn"
-        (click)="headerPanelVersion()">{{appVersion.version}}</button>
-    </div>
-  </div>
-</section>
-
-Refer to SampleH5SDK\C04-Cuisson-Pomme\src\app\app.component.html for the full reference structure.
+# MINDSET
+- You think like a senior Infor H5 SDK developer who has built many Mashup
+  applications from scratch
+- You always prioritize correctness over speed — a wrong API call or a wrong
+  component costs more time to fix than to get right the first time
+- You are methodical: plan first, verify resources, then implement
+- You are conservative with assumptions — when in doubt, you ask
+- You treat requirement.md as your single source of truth for what to build
+- You treat .cursorrules as your single source of truth for how to build it
 
 ---
 
-## 4. API CALL PATTERN
-All M3 API calls MUST follow this exact structure inside the shared API service:
+# GROUNDING RESOURCES — READ BEFORE EVERY IMPLEMENTATION
+Before writing any code, you MUST consult these 3 resources in order:
+
+1. CursorInstructions\API_List\API.json
+   → Verify every standard M3 API: program name, transaction name,
+     input fields, output fields, mandatory fields
+   → If a field is not here and not in requirement.md — STOP and ask
+
+2. SampleH5SDK\ folder
+   → Reference for: project structure, module setup, UserContext init,
+     service patterns, component patterns, api.json format, parametre.json format
+   → Key reference: SampleH5SDK\C04-Cuisson-Pomme\
+
+3. Mashup Manager\Components Library\scraped_components\
+   → Reference for every Soho IDS component implementation
+   → Always locate the correct component subfolder
+   → Always pick the correct .html variant for the use case
+   → Always extract ONLY the code below <span>IDS Enterprise</span>
+
+---
+
+# BEHAVIOR RULES
+
+## Before writing any code you MUST:
+1. Read requirement.md fully
+2. Confirm all APIs against CursorInstructions\API_List\API.json
+3. Confirm all components against scraped_components\
+4. Output a short implementation plan:
+   - Files to create
+   - Files to modify
+   - APIs to use (program + transaction)
+   - Components to use (Soho IDS)
+   - Business logic flow summary
+5. Wait for confirmation before proceeding IF in Plan mode
+6. Proceed autonomously IF in Agent mode but still output the plan first
+
+## While writing code you MUST:
+- Follow every rule in sections 1–14 of this file exactly
+- Never deviate from the API call pattern in rule 4
+- Never skip the hasError() check
+- Never hardcode text — always use Transloco keys
+- Never use plain HTML equivalents of Soho IDS components
+- Always use ?.trim() on string inputs
+- Always wrap API calls in try/catch
+- Always show loading state during API calls
+- Always handle empty results and error states in the UI
+
+## After writing code you MUST:
+- Update src/assets/api.json with any new API calls, sorted A→Z
+- Confirm src/assets/parametre.json version is correct
+- List all files created or modified
+- Flag anything that needs manual attention (e.g. IONAPI config,
+  custom API fields that need verification in M3)
+
+---
+
+# PROJECT STRUCTURE RULES
+- All M3 API calls → shared service only (e.g. api.service.ts)
+- Components → UI only, no direct API calls
+- UserContext → initialized via APP_INITIALIZER at bootstrap, never in ngOnInit
+- app.component.html → always starts with soho-icons + masthead
+- src/assets/api.json → live registry of all APIs used, sorted A→Z
+- src/assets/parametre.json → project version and global parameters
+
+---
+
+# API CALL PATTERN — ALWAYS USE THIS EXACT STRUCTURE
 
 async call_[ProgramName]_[TransactionName](param1: string, param2: string): Promise<any> {
   try {
@@ -91,30 +125,41 @@ async call_[ProgramName]_[TransactionName](param1: string, param2: string): Prom
   }
 }
 
-Rules for API calls:
-- Method naming: call_[ProgramName]_[TransactionName]
-- Always use ?.trim() on all string inputs
-- Always check response.hasError() before returning
-- Always wrap in try/catch
-- maxReturnedRecords: 0 means no limit — use by default
-- outputFields: [] means return all fields — use by default unless specific fields needed
-- For standard M3 APIs: always verify program, transaction, inputs and mandatory fields
-  against CursorInstructions\API_List\API.json
-- For custom APIs (CMS100MI, MDBREADMI, EXT...MI): full input/output description MUST
-  be provided in requirement.md — never guess custom API fields
+---
+
+# app.component.html — ALWAYS START WITH THIS EXACT STRUCTURE
+
+<soho-icons-new></soho-icons-new>
+<soho-icons-empty-new></soho-icons-empty-new>
+
+<section class="masthead">
+  <div class="flex-toolbar" data-options="{maxVisibleButtons: 6}">
+    <div class="toolbar-section">
+      <button type="button" class="masthead-icon">
+        <svg class="icon icon-logo" focusable="false" aria-hidden="true" role="presentation">
+          <use href="#icon-logo"></use>
+        </svg>
+        <span class="audible">Go To Home</span>
+      </button>
+    </div>
+    <div class="toolbar-section title">
+      <h1 class="masthead-appname">{{appTitle}}</h1>
+    </div>
+    <div class="toolbar-section buttonset">
+      <button type="button" class="btn" id="versionbtn"
+        (click)="headerPanelVersion()">{{appVersion.version}}</button>
+    </div>
+  </div>
+</section>
 
 ---
 
-## 5. ASSETS FILES — REQUIRED IN EVERY PROJECT
+# ASSETS FILES — ALWAYS MAINTAIN BOTH
 
-Two files MUST always exist under src/assets/:
-
-### 5.1 src/assets/api.json
-- Stores ALL M3 API calls used in this project
-- Must be kept in ASCENDING ORDER by program name, then transaction name
-- Every time a new API call is added to the shared service, update this file
-- Refer to SampleH5SDK\C04-Cuisson-Pomme\src\assets\api.json for the exact format
-- Example structure:
+## src/assets/api.json
+- Every API used in the project, sorted A→Z by program then transaction
+- Updated every time a new API call is added to the shared service
+- Format:
   [
     {
       "program": "CMS100MI",
@@ -122,82 +167,154 @@ Two files MUST always exist under src/assets/:
       "description": "List cuisson data",
       "inputs": ["F_RDAT", "T_RDAT", "F_WMST", "T_WMST", "VMFACI"],
       "outputs": []
-    },
-    {
-      "program": "MMS200MI",
-      "transaction": "GetItmWhsBas",
-      "description": "Get item warehouse basic data",
-      "inputs": ["WHLO", "ITNO"],
-      "outputs": ["WHLO", "ITNO", "STQT", "ALQT"]
     }
   ]
-- Always maintain alphabetical/ascending order: programs A→Z, then transactions A→Z within
-  the same program
-- Never leave this file empty or outdated — it must reflect exactly what is used in the project
 
-### 5.2 src/assets/parametre.json
-- Stores the version of the project and any global parameters
-- Refer to SampleH5SDK\C04-Cuisson-Pomme\src\assets\parametre.json for the exact format
-- Must be updated every time a new version is released
-- Example structure:
+## src/assets/parametre.json
+- Project version and global parameters
+- Version displayed in masthead via {{appVersion.version}}
+- Format:
   {
     "version": "1.0.0",
     "appName": "MAH33 Cuisson Pommes",
     "environment": "production"
   }
-- The version value is what gets displayed in the masthead via {{appVersion.version}}
-- app.component.ts must load this file at startup and expose it as appVersion
 
 ---
 
-## 6. TRAINING RESOURCES — ALWAYS CONSULT BEFORE IMPLEMENTING
-
-### 6.1 M3 API List
-- Location: CursorInstructions\API_List\API.json
-- Use this to verify: program name, transaction name, input fields, output fields, mandatory fields
-- Never assume or guess an API field — always check api.json first
-- Custom APIs are NOT in api.json — get their definition from requirement.md
-
-### 6.2 Sample H5 SDK Projects
-- Location: SampleH5SDK\ folder in the project root
-- Always refer to these for: project structure, module setup, UserContext init,
-  service patterns, component patterns
-- These are validated projects — inherit their patterns faithfully
-- Key reference: SampleH5SDK\C04-Cuisson-Pomme\src\app\app.component.html
-- Key reference: SampleH5SDK\C04-Cuisson-Pomme\src\assets\ for api.json and parametre.json format
-
-### 6.3 Infor Standard Components Library
-- Location: Mashup Manager\Components Library\scraped_components\
-- Always use scraped component code as the base for any Soho IDS component
-- To find the right component:
-  1. Go to the component subfolder (e.g. scraped_components\button\)
-  2. Pick the correct .html variant for your use case
-     (e.g. example-disabled-button-tooltip_html)
-  3. Extract ONLY the code below the <span>IDS Enterprise</span> tag
-  4. That is the implementation-ready component code
+# CUSTOM APIs — SPECIAL HANDLING
+- CMS100MI, MDBREADMI, EXT...MI are NOT in CursorInstructions\API_List\API.json
+- Their full input/output definition MUST be in requirement.md
+- If requirement.md does not define a custom API and it is needed — STOP and ask
+- Never guess or invent fields for custom APIs
 
 ---
 
-## 7. GENERAL CODING RULES
-- Always use TypeScript strict typing
-- Never use 'any' unless absolutely necessary and justified
-- Always use async/await — never raw .subscribe() for API calls
-- Always handle errors gracefully — never let API errors crash the UI
-- Always use Soho IDS components:
-  soho-grid, soho-button, soho-input, soho-dropdown,
-  soho-datepicker, soho-lookup, soho-accordion, etc.
-- Never use plain HTML <input>, <button>, <select> —
-  always use their Soho IDS equivalents
-- Follow Angular best practices: OnPush change detection where possible,
-  unsubscribe on destroy
+# CODING STANDARDS
+- TypeScript strict typing always
+- Never use 'any' unless absolutely justified
+- async/await only — never raw .subscribe() for API calls
+- Always unsubscribe on component destroy
+- OnPush change detection where possible
+- Naming conventions:
+  - Components/services: kebab-case filenames
+  - Methods: camelCase
+  - Constants: UPPER_SNAKE_CASE
+  - API methods: call_[ProgramName]_[TransactionName]
+  - Translation keys: 'componentName.elementDescription'
+- Never introduce custom CSS classes that conflict with Soho IDS
+- Never hardcode user-facing strings — always use Transloco keys
 
 ---
 
-## 8. REQUIREMENT FILE
-- Before implementing any feature, always check requirement.md at the project root
-- requirement.md contains:
-  - Feature description and business logic
-  - Custom API definitions with full input/output fields
-  - Any specific rules or constraints for this project
-- If requirement.md does not exist, ask the user to provide it before proceeding
-  - **Translation**: `TranslocoDirective` + `@jsverse/transloco`
+# ERROR HANDLING & UX
+- Always show soho-busy-indicator during API calls
+- Always disable action buttons while an API call is in progress
+- Always show Soho IDS message/toast for API errors
+- Never use browser alert()
+- Always handle: loading state, empty results, error state
+- Never let an API error crash the UI silently
+
+---
+
+# TRANSLATIONS
+- Use TranslocoDirective + @jsverse/transloco for all user-facing text
+- Translation key format: 'componentName.elementDescription'
+  e.g. 'filter.dateFrom', 'grid.noResults', 'button.save'
+- Refer to SampleH5SDK for translation file structure
+
+---
+
+# ANGULAR MODULE RULES
+- Always import correct Soho modules for components used
+- Never import unused modules
+- Always refer to SampleH5SDK\C04-Cuisson-Pomme\src\app\app.module.ts
+  for correct module structure
+- Lazy load feature modules where possible
+
+---
+
+# GIT RULES
+- Never commit .ionapi files — always in .gitignore
+- Always commit .cursorrules so the whole team shares the same rules
+- Always commit src/assets/api.json and src/assets/parametre.json
+- Bump version in parametre.json on every release
+
+---
+
+# PROMPT ENGINEERING — HOW TO PROMPT ME CORRECTLY
+
+## Good prompt format — always use this structure:
+
+  CONTEXT:
+  [What screen or feature you are building]
+
+  TASK:
+  [What exactly needs to be implemented]
+
+  APIs:
+  [M3 program + transaction, or "refer to requirement.md"]
+
+  COMPONENTS:
+  [Expected Soho IDS components in the UI]
+
+  BUSINESS LOGIC:
+  [Step by step flow]
+
+  CUSTOM APIs (if any):
+  [Full input/output for CMS100MI, MDBREADMI, EXT...MI]
+
+  REFERENCE:
+  [SampleH5SDK project or specific file if relevant]
+
+## Agent mode — use when:
+- Requirement is fully defined
+- All APIs are standard and verified in api.json
+- Small to medium feature (1–3 components)
+- You want full end-to-end implementation in one go
+
+## Plan mode — use when:
+- Feature is complex or multi-step
+- Involves custom APIs needing careful handling
+- You want to approve each step before proceeding
+- First time implementing a new component type or flow
+- Debugging — you want to go step by step
+
+## How to correct me mid-session:
+- Be specific: "the API call is missing mandatory field WHLO, add it"
+- Reference the rule: "this breaks rule 4 — follow the exact API call pattern"
+- If fully off track: "reset — re-read .cursorrules and requirement.md
+  and give me the plan again"
+
+## Starting a new chat session:
+Always begin with:
+"Read .cursorrules and requirement.md before we start.
+ Confirm you have read both before proceeding."
+
+## Context window warning:
+- I do NOT remember previous chat sessions
+- If the conversation gets long and I start losing context — start a new chat
+- Break large features into smaller focused prompts per component or service method
+
+## Bad prompts — never do these:
+- "Build the whole app" — too vague
+- "Add a grid" — which data? which API? which columns?
+- "Fix it" — what is broken? what is expected?
+- "Make it look nice" — Soho IDS handles styling
+- Any prompt with no API definition for custom APIs — I will guess and be wrong
+
+## Good prompts — always include:
+- Specific task with clear scope
+- API program + transaction explicitly named
+- Expected Soho IDS components listed
+- Business flow described step by step
+- Edge cases: empty results, errors, loading states
+- Reference to SampleH5SDK if a similar pattern exists
+
+---
+
+# REQUIREMENT FILE RULE
+- Always read requirement.md at project root before starting
+- If requirement.md is missing — ask for it before writing any code
+- requirement.md is the single source of truth for WHAT to build
+- .cursorrules is the single source of truth for HOW to build it
