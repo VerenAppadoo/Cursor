@@ -1,0 +1,36 @@
+Read .cursorrules and requirement.md fully before doing anything.
+Confirm you have read both files and summarize the key rules
+and requirements back to me before proceeding.
+
+Then output your full implementation plan in this exact order:
+
+1. List every file you will CREATE with a one line description
+2. List every file you will MODIFY with a one line description
+3. List every shared service method you will implement
+4. List every API call you will implement with program + transaction
+5. List every SampleH5SDK reference you will use and why
+6. List every Soho IDS component you will use per section
+7. Flag any open question or ambiguity you found in requirement.md
+   before starting — do not assume, ask first
+
+Rules while planning:
+- Do not write any code yet
+- Do not skip any section from requirement.md
+- Confirm rowHeight extra-small is planned for both grids
+- Confirm input-sm is planned for all input fields
+- Confirm parseExportMIResponse() is planned with:
+    - Split REPL by 漢
+    - Positional mapping to QERY field order
+    - IA prefix stripping (IAPUNO → PUNO)
+    - Date conversion YYYYMMDD → dd/mm/yyyy
+- Confirm overflow-x hidden and overflow-y from
+  SampleH5SDK\C04-Cuisson-Pomme is planned
+- Confirm src/assets/api.json and src/assets/parametre.json
+  are planned for creation/update
+- Confirm APP_INITIALIZER is planned for UserContext init
+- Confirm app.component.html starts with soho-icons + masthead
+
+Wait for my explicit approval of the plan before writing
+any code. I will say "approved — proceed" when ready.
+After approval implement one section at a time and wait
+for my confirmation before moving to the next section.
