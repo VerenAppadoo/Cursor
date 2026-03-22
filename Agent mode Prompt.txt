@@ -1,1 +1,105 @@
-mm
+Read .cursorrules and requirement.md fully before writing
+any code. Confirm you have read both files and summarize
+the key rules back to me in 5 lines, then immediately
+proceed with the full implementation.
+
+Implement the complete MAH-PO application in this exact order:
+
+STEP 1 — Project structure
+- Create all required files and folders
+- Set up app.module.ts with correct Soho imports and
+  APP_INITIALIZER for UserContext
+- Refer to SampleH5SDK\C04-Cuisson-Pomme for module structure
+
+STEP 2 — Shared service
+- Implement all 5 required methods:
+    call_EXPORTMI_Select()
+    parseExportMIResponse() — split REPL by 漢, map positionally
+                              to QERY field order, strip IA prefix,
+                              convert dates YYYYMMDD → dd/mm/yyyy
+    call_PPS200MI_LstLine2()
+    formatDateForDisplay()  — YYYYMMDD → dd/mm/yyyy
+    formatDateForAPI()      — Date object → YYYYMMDD
+- Follow the exact API call pattern from .cursorrules rule 4
+- Never inline any logic in the component
+
+STEP 3 — app.component.html
+- First 2 lines must be:
+    <soho-icons-new></soho-icons-new>
+    <soho-icons-empty-new></soho-icons-empty-new>
+- Then masthead with appTitle and appVersion.version
+- Refer to SampleH5SDK\C04-Cuisson-Pomme\src\app\app.component.html
+- overflow-x: hidden on page container
+- overflow-y: refer to SampleH5SDK\C04-Cuisson-Pomme
+
+STEP 4 — Row 1: Filter bar
+- soho-datepicker From Date
+    - Default: today - 15 days
+    - CSS class: input-sm
+    - Display format: dd/mm/yyyy
+- soho-datepicker To Date
+    - Default: today + 15 days
+    - CSS class: input-sm
+    - Display format: dd/mm/yyyy
+- Both fields side by side
+
+STEP 5 — Row 2: PO Headers grid
+- soho-grid with:
+    - Single select mode
+    - rowHeight: 'extra-small'
+    - Filter row enabled
+    - Grid height from SampleH5SDK\C04-Cuisson-Pomme
+    - Toolbar with Refresh button from SampleH5SDK\C04-Cuisson-Pomme
+    - soho-busy-indicator while loading
+    - Columns from EXPORTMI.Select parsed output
+      (no user defined fields UCA1...)
+    - Date columns formatted to dd/mm/yyyy
+    - Row selected event from SampleH5SDK\C04-Formulation-BOM
+    - On row selected: call PPS200MI.LstLine2 with PUNO
+    - On refresh or deselect: set PO Lines dataset to []
+      using updateDataset
+
+STEP 6 — Row 3: PO Lines grid
+- soho-grid with:
+    - rowHeight: 'extra-small'
+    - Filter row enabled
+    - Grid height from SampleH5SDK\C04-Cuisson-Pomme
+    - Toolbar with Refresh button (same as Row 2)
+    - soho-busy-indicator while loading
+    - All columns from PPS200MI.LstLine2 output
+    - Date columns formatted to dd/mm/yyyy
+    - Default dataset = []
+    - On refresh: re-call LstLine2 only if PO Header is selected
+      otherwise updateDataset to []
+
+STEP 7 — Assets
+- Create src/assets/api.json with both APIs sorted A→Z:
+    EXPORTMI / Select
+    PPS200MI / LstLine2
+- Create src/assets/parametre.json:
+    version: 1.0.0
+    appName: MAH-PO
+    environment: production
+
+STEP 8 — Translations
+- Implement all Transloco keys from requirement.md section 13
+- Never hardcode any user-facing string
+
+Critical rules to enforce throughout — never break these:
+- input-sm on ALL input fields and datepickers
+- rowHeight: 'extra-small' on ALL grids
+- REPL split by 漢 in parseExportMIResponse()
+- QERY has NO SELECT keyword — starts directly with field names
+- Date to API always YYYYMMDD
+- Date to UI always dd/mm/yyyy
+- All API calls in shared service only — never in component
+- UserContext via APP_INITIALIZER — never in ngOnInit
+- soho-busy-indicator on every API call
+- Soho toast for every API error
+- Never use plain HTML equivalents of Soho IDS components
+- After all code: update src/assets/api.json sorted A→Z
+- List all files created and modified at the end
+
+If you encounter any ambiguity about PPS200MI.GetHead field
+list or LstLine2 output fields — stop and ask before
+guessing field names.
